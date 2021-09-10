@@ -1,2 +1,2 @@
 # script-engine-test
-Test cases for automatic tests of HyperDbg's script engine
+This project is added to the script engine of HyperDbg's main project for automatic testing and now it's archived.
