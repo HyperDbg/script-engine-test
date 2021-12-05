@@ -276,7 +276,7 @@ namespace EvalScripts
         }
         */
 
-        
+
         private static string INC_DECP()
         {
             string res = string.Empty;
@@ -285,7 +285,7 @@ namespace EvalScripts
             depth -= 1;
             return res;
         }
-        
+
 
         private static string INCP()
         {
@@ -789,7 +789,11 @@ namespace EvalScripts
             else if (r == 3)
             {
                 var ri = random.Next(0, 20);
-                res = "0t" + Convert.ToString(ri, 8); // octal
+                //
+                // C# don't support prefix for octals
+                //
+                // res = "0t" + Convert.ToString(ri, 8); // octal
+                res = Convert.ToString(ri, 8); // octal
                 depth -= 1;
                 return res;
             }
@@ -849,20 +853,24 @@ namespace EvalScripts
         private static string evaluate(string s)
         {
             string s2 = s.Replace("0n", "").Replace("0y", "0b").Replace("/", "//");
-            string v = "$error$";
+            string v = String.Empty;
 
+            var tmp = Eval.EvalStatementAsync(s2);
 
-            try
+            if (tmp.Result.Item1 == true)
             {
-                /*
-                v = eval(s2);
-                v = tohex(v, 64);
+                v = tmp.Result.Item2.ToString("X");
                 v = v.Replace("0x", "");
-                */
             }
-            catch
+            else
             {
+                v = "$error$";
             }
+
+
+            //
+            // Script run without error
+            //
 
             return v;
         }

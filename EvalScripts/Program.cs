@@ -9,8 +9,19 @@ namespace EvalScripts
 {
     class Program
     {
-        public static bool EvalScriptRun(string Script)
+
+        public static bool ScriptRun(string Script)
         {
+            /*
+            var code = "5 + num";
+            var numValue = 3;
+
+            var setParam = await CSharpScript.RunAsync("var num = " + numValue + ";");
+            var runCode = await setParam.ContinueWithAsync(code);
+            var x = runCode.ReturnValue;
+
+            */
+
             try
             {
                 CSharpScript.EvaluateAsync(Script);
@@ -29,12 +40,12 @@ namespace EvalScripts
                 return false;
             }
         }
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             StatementGenerator.generate();
-
             return;
-            bool result = EvalScriptRun(@"
+
+            bool result = ScriptRun(@"
             
             for (int i = 0; i < 100; i++) 
             {
