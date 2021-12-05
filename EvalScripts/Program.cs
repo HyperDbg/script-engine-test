@@ -31,7 +31,9 @@ namespace EvalScripts
         }
         static void Main(string[] args)
         {
+            StatementGenerator.generate();
 
+            return;
             bool result = EvalScriptRun(@"
             
             for (int i = 0; i < 100; i++) 
