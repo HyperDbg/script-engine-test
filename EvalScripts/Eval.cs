@@ -35,7 +35,7 @@ namespace EvalScripts
 
         }
 
-        public static bool EvalScriptRun(string Script)
+        public static Tuple<bool, int> EvalScriptRun(string Script)
         {
             /*
             bool result = EvalScriptRun(@"
@@ -55,7 +55,7 @@ namespace EvalScripts
                 //
                 // Script run without error
                 //
-                return true;
+                return new Tuple<bool, int>(true, 0);
             }
             catch (Exception)
             {
@@ -63,7 +63,7 @@ namespace EvalScripts
                 //
                 // Script has error
                 //
-                return false;
+                return new Tuple<bool, int>(false, 0);
             }
         }
     }
