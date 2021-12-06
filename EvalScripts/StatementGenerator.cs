@@ -18,6 +18,15 @@ namespace EvalScripts
             depth = 0;
         }
 
+        public static string GET_CHECK_STATEMENT()
+        {
+            var token = random.Next(10000);
+            string res = string.Empty;
+
+            res = " test_statement("+ "0x" + token.ToString("X") + "); ";
+            return res;
+        }
+
         public static string S()
         {
 
@@ -125,7 +134,7 @@ namespace EvalScripts
         {
             string res = string.Empty;
             depth += 1;
-            res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + S() + "}" + ELSIF_STATEMENT() + ELSE_STATEMENT() + END_OF_IF();
+            res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT() + ELSE_STATEMENT() + END_OF_IF();
             depth -= 1;
             return res;
         }
@@ -144,7 +153,7 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + S() + "}" + ELSIF_STATEMENT();
+                res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT();
                 depth -= 1;
                 return res;
             }
@@ -177,7 +186,7 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = " else {" + S() + "}";
+                res = " else {" + GET_CHECK_STATEMENT() + S() + "}";
                 depth -= 1;
                 return res;
             }
@@ -291,31 +300,34 @@ namespace EvalScripts
 
         public static string BOOLEAN_EXPRESSION()
         {
-            var r = random.Next(2);
             string res = string.Empty;
+            string[] Operators = { "", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " != ", " = ", " > ", " < " };
+            var r = random.Next(0, Operators.Length);
+            var r2 = random.Next(2);
 
             depth += 1;
-            if (depth >= MAX_DEPTH)
-            {
-                r = 1;
-            }
 
-            if (r == 0)
+            string expr = EXPRESSION();
+
+            if (r2 == 0)
             {
-                string expr = EXPRESSION();
-                res = expr + " = " + expr + SIMPLE_ASSIGNMENTP();
+                //
+                // Two sides are equal
+                //
+                res = expr + Operators[r] + expr + SIMPLE_ASSIGNMENTP();
                 depth -= 1;
                 return res;
             }
-            else if (r == 1)
+            else
             {
-                string expr = EXPRESSION();
-                res = expr + " == " + expr + SIMPLE_ASSIGNMENTP();
+                //
+                // Two sides are not equal 
+                //
+                string expr2 = EXPRESSION();
+                res = expr + Operators[r] + expr2 + SIMPLE_ASSIGNMENTP();
                 depth -= 1;
                 return res;
             }
-
-            return string.Empty;
         }
 
         public static string EXPRESSION()

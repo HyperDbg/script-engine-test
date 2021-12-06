@@ -52,11 +52,11 @@ namespace EvalScripts
             //
             // Evaluate the conditional statement
             //
-            var EvalResult = Eval.EvalScriptRun(CSharpBasedString);
+            var EvalResult = Eval.EvalScriptRunConditionalStatementAsync(CSharpBasedString);
 
-            if (EvalResult.Item1 == true)
+            if (EvalResult.Result.Item1 == true)
             {
-                Result = "$success$";
+                Result = EvalResult.Result.Item2.ToString("X");
                 return true;
             }
             else
