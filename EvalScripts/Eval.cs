@@ -9,7 +9,7 @@ namespace EvalScripts
 {
     class Eval
     {
-        public static async Task<Tuple<bool,int>> EvalStatementAsync(string Statement)
+        public static async Task<Tuple<bool, int>> EvalStatementAsync(string Statement)
         {
             // Statement = "5 + 5";
 
@@ -34,5 +34,37 @@ namespace EvalScripts
             }
 
         }
+
+        public static bool EvalScriptRun(string Script)
+        {
+            /*
+            bool result = EvalScriptRun(@"
+            
+            for (int i = 0; i < 100; i++) 
+            {
+                System.Console.WriteLine(i);
+            }
+
+            ");s
+            */
+
+            try
+            {
+                CSharpScript.EvaluateAsync(Script);
+
+                //
+                // Script run without error
+                //
+                return true;
+            }
+            catch (Exception)
+            {
+
+                //
+                // Script has error
+                //
+                return false;
+            }
         }
+    }
 }

@@ -20,6 +20,7 @@ namespace EvalScripts
             string res = string.Empty;
 
             depth += 1;
+
             if (depth >= MAX_DEPTH)
             {
                 r = 1;
@@ -131,6 +132,7 @@ namespace EvalScripts
 
 
             depth += 1;
+
             if (depth >= MAX_DEPTH)
             {
                 r = 1;
@@ -151,7 +153,6 @@ namespace EvalScripts
 
             return string.Empty;
         }
-
 
         private static string ELSIF_STATEMENTP()
         {
@@ -186,7 +187,6 @@ namespace EvalScripts
             return string.Empty;
 
         }
-
 
         private static string END_OF_IF()
         {
@@ -264,19 +264,6 @@ namespace EvalScripts
             return res;
         }
 
-        /*
-
-        private static string INC_DECP()
-        {
-            string res = string.Empty;
-            depth += 1;
-            res = "++" + INCP();
-            depth -= 1;
-            return res;
-        }
-        */
-
-
         private static string INC_DECP()
         {
             string res = string.Empty;
@@ -285,7 +272,6 @@ namespace EvalScripts
             depth -= 1;
             return res;
         }
-
 
         private static string INCP()
         {
@@ -299,20 +285,11 @@ namespace EvalScripts
             return res;
         }
 
-        /*
-        private static string INC_DECP()
-        {
-            string res = string.Empty;
-            return res;
-        }
-        */
-
         private static string BOOLEAN_EXPRESSION()
         {
             string res = string.Empty;
             return res;
         }
-
 
         private static string EXPRESSION()
         {
@@ -322,7 +299,6 @@ namespace EvalScripts
             depth -= 1;
             return res;
         }
-
 
         private static string E0P()
         {
@@ -353,7 +329,6 @@ namespace EvalScripts
 
         }
 
-
         private static string E1()
         {
             string res = string.Empty;
@@ -363,7 +338,6 @@ namespace EvalScripts
             depth -= 1;
             return res;
         }
-
 
         private static string E1P()
         {
@@ -392,7 +366,6 @@ namespace EvalScripts
             return string.Empty;
 
         }
-
 
         private static string E2()
         {
@@ -433,7 +406,6 @@ namespace EvalScripts
 
         }
 
-
         private static string E3()
         {
             string res = string.Empty;
@@ -472,7 +444,6 @@ namespace EvalScripts
             return string.Empty;
 
         }
-
 
         private static string E4()
         {
@@ -726,7 +697,6 @@ namespace EvalScripts
             res = "";
             return res;
         }
-
         private static string L_VALUE()
         {
             string res = string.Empty;
@@ -760,6 +730,7 @@ namespace EvalScripts
             var r = random.Next(0, 8);
 
             depth += 1;
+
             if (depth >= MAX_DEPTH)
             {
                 r = 1;
@@ -775,7 +746,7 @@ namespace EvalScripts
             else if (r == 1)
             {
                 var ri = random.Next(0, 20);
-                res = ri.ToString("X");  // hex
+                res = "0x" + ri.ToString("X");  // hex
                 depth -= 1;
                 return res;
             }
@@ -844,41 +815,33 @@ namespace EvalScripts
             return string.Empty;
         }
 
-
-        private static string tohex(int val, int nbits)
-        {
-            return ((val + (1 << nbits)) % (1 << nbits)).ToString("X");
-        }
-
-        private static string evaluate(string s)
+        private static bool evaluate(string s, ref string result)
         {
             string s2 = s.Replace("0n", "").Replace("0y", "0b").Replace("/", "//");
-            string v = String.Empty;
 
             var tmp = Eval.EvalStatementAsync(s2);
 
             if (tmp.Result.Item1 == true)
             {
-                v = tmp.Result.Item2.ToString("X");
-                v = v.Replace("0x", "");
+                result = tmp.Result.Item2.ToString("X");
+                result = result.Replace("0x", "");
+                return true;
             }
             else
             {
-                v = "$error$";
+                result = "$error$";
+                return false;
             }
 
-
-            //
-            // Script run without error
-            //
-
-            return v;
         }
 
         public static void generate()
         {
+            string result = string.Empty;
 
-            StreamWriter f = new StreamWriter("script-test-cases.txt");
+            StreamWriter fw = new StreamWriter("test-cases-wrong.txt");
+            StreamWriter fc = new StreamWriter("test-cases-correct.txt");
+
             int counter = 1;
 
             int initCounter = counter;
@@ -889,22 +852,34 @@ namespace EvalScripts
                 if (sentence.Length <= 150)
                 {
                     string res = "x = " + sentence + "; test_statement(x);";
-                    string val = evaluate(sentence);
-                    /*if type(val) == "int" and not(abs(val)<= 65536){
-                        continue;
-                    }*/
-                    f.WriteLine(counter.ToString() + "\n");
-                    f.WriteLine(res + "\n");
-                    f.WriteLine(val.ToString() + "\n");
-                    f.WriteLine("$end$" + "\n");
+                    bool evalres = evaluate(sentence, ref result);
+
+                    if (evalres)
+                    {
+                        fc.WriteLine(counter.ToString());
+                        fc.WriteLine(res);
+                        fc.WriteLine(result);
+                        fc.WriteLine("$end$");
+                        fc.Flush();
+                    }
+                    else
+                    {
+                        fw.WriteLine(counter.ToString());
+                        fw.WriteLine(res);
+                        fw.WriteLine(result);
+                        fw.WriteLine("$end$");
+                    }
+
+
                     Console.WriteLine(counter);
                     Console.WriteLine(res);
-                    Console.WriteLine(val);
+                    Console.WriteLine(result);
                     Console.WriteLine();
                     counter += 1;
                 }
             }
-            f.Close();
+            fw.Close();
+            fc.Close();
         }
 
 
