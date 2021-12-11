@@ -12,6 +12,12 @@ namespace EvalScripts
         {
             string Temp = Script.Replace("0n", "").Replace("0y", "0b").Replace("/", "//");
 
+            foreach (var item in StatementGenerator.Identifiers)
+            {
+
+                Temp = Script.Replace(item.IdentifierName, item.Value.ToString("X"));
+            }
+
             return Temp;
         }
 

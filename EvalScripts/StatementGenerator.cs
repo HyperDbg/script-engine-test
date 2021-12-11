@@ -12,6 +12,15 @@ namespace EvalScripts
         static Random random = new Random();
         static int depth = 0;
         const int MAX_DEPTH = 10;
+        public const int SizeOfStructOfIdentifiers = 50;
+        public struct IDENTIFIER_DEFINITION
+        {
+
+            public string IdentifierName;
+            public int Value;
+        }
+
+        public static List<IDENTIFIER_DEFINITION> Identifiers = new List<IDENTIFIER_DEFINITION>();
 
         public static void ResetDepth()
         {
@@ -800,20 +809,16 @@ namespace EvalScripts
             string res = string.Empty;
             return res;
         }
+ 
+
 
         public static string E12()
         {
             string res = string.Empty;
 
-            var r = random.Next(0, 8);
+            var r = random.Next(0, 8 + Identifiers.Count);
 
             depth += 1;
-
-            if (depth >= MAX_DEPTH)
-            {
-                r = 1;
-            }
-
 
             if (r == 0)
             {
@@ -871,24 +876,15 @@ namespace EvalScripts
                 depth -= 1;
                 return res;
             }
-            else if (r == 8)
+            else 
             {
-                res = "@rax"; // register
+                var ri = random.Next(0, Identifiers.Count);
+
+                res = Identifiers[ri].IdentifierName; // register, pesudo-registers, ids whatever
                 depth -= 1;
                 return res;
             }
-            else if (r == 9)
-            {
-                res = "x"; // id
-                depth -= 1;
-                return res;
-            }
-            else if (r == 10)
-            {
-                res = "pid"; // sample pseudo register, can be added more options later
-                depth -= 1;
-                return res;
-            }
+           
 
             return string.Empty;
         }

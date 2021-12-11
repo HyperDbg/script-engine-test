@@ -16,6 +16,22 @@ namespace EvalScripts
             CREATE_CONDITIONAL_STATEMENTS,
 
         }
+
+        private static void InitilizeIdentifers()
+        {
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax1", Value = 12 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax2", Value = 12 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax3", Value = 12 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax4", Value = 12 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax5", Value = 12 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid1", Value = 0x55 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid2", Value = 0x55 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid3", Value = 0x55 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid4", Value = 0x55 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid5", Value = 0x55 });
+        
+        }
+
         private static void Generate(ACTION_TYPE Type)
         {
             string Result = string.Empty;
@@ -94,6 +110,11 @@ namespace EvalScripts
 
         static void Main(string[] args)
         {
+            //
+            // First of all we should initialize identifiers and their values
+            //
+            InitilizeIdentifers();
+
             // Generate(ACTION_TYPE.CREATE_EXPRESSIONS);
             Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS);
         }
