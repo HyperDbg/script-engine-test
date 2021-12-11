@@ -53,7 +53,7 @@ namespace EvalScripts
                 {
                     Sentence = StatementGenerator.IF_STATEMENT();
 
-                    if (!(Sentence.Length <= 400))
+                    if (!(Sentence.Length <= 1000))
                     {
                         continue;
                     }

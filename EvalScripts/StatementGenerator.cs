@@ -11,7 +11,7 @@ namespace EvalScripts
 
         static Random random = new Random();
         static int depth = 0;
-        const int MAX_DEPTH = 20;
+        const int MAX_DEPTH = 10;
 
         public static void ResetDepth()
         {
@@ -23,7 +23,7 @@ namespace EvalScripts
             var token = random.Next(10000);
             string res = string.Empty;
 
-            res = " test_statement("+ "0x" + token.ToString("X") + "); ";
+            res = " test_statement(" + "0x" + token.ToString("X") + "); ";
             return res;
         }
 
@@ -133,8 +133,9 @@ namespace EvalScripts
         public static string IF_STATEMENT()
         {
             string res = string.Empty;
-            depth += 1;
-            res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT() + ELSE_STATEMENT() + END_OF_IF();
+            depth += 1; 
+            res = " if (" +  BOOLEAN_EXPRESSION() +  ")  {" + GET_CHECK_STATEMENT() + /* S() +*/ "}" + ELSIF_STATEMENT() + ELSE_STATEMENT() + END_OF_IF();
+         
             depth -= 1;
             return res;
         }
@@ -153,7 +154,7 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT();
+                res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + /* S() + */ "}" + ELSIF_STATEMENT();
                 depth -= 1;
                 return res;
             }
@@ -186,7 +187,7 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = " else {" + GET_CHECK_STATEMENT() + S() + "}";
+                res = " else {" + GET_CHECK_STATEMENT() + /* S() +*/ "}";
                 depth -= 1;
                 return res;
             }
@@ -301,13 +302,17 @@ namespace EvalScripts
         public static string BOOLEAN_EXPRESSION()
         {
             string res = string.Empty;
-            string[] Operators = { "", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " != ", " = ", " > ", " < " };
+            string expr = string.Empty;
+            string[] Operators = { " ", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " != ", " = ", " > ", " < ", "((", "(", ")", "))" };
             var r = random.Next(0, Operators.Length);
-            var r2 = random.Next(2);
+            var r2 = random.Next(3);
 
             depth += 1;
 
-            string expr = EXPRESSION();
+
+            expr = EXPRESSION();
+
+
 
             if (r2 == 0)
             {
@@ -320,10 +325,17 @@ namespace EvalScripts
             }
             else
             {
+
                 //
                 // Two sides are not equal 
                 //
-                string expr2 = EXPRESSION();
+                string expr2 = EXPRESSION(true);
+
+                if (expr2.Length >= 150)
+                {
+                    expr2 = EXPRESSION(true);
+                }
+
                 res = expr + Operators[r] + expr2 + SIMPLE_ASSIGNMENTP();
                 depth -= 1;
                 return res;
@@ -337,6 +349,33 @@ namespace EvalScripts
             res = E1() + E0P();
             depth -= 1;
             return res;
+        }
+
+        public static string EXPRESSION(bool ForceToBeValid)
+        {
+            string Result = string.Empty;
+
+            if (!ForceToBeValid)
+            {
+                return EXPRESSION();
+            }
+            else
+            {
+
+                while (true)
+                {
+                    string Expr = EXPRESSION();
+
+                    if (HighLevelScriptGen.EvaluateExpression(Expr, ref Result))
+                    {
+                        return Expr;
+                    }
+                }
+
+            }
+
+            return string.Empty;
+
         }
 
         public static string E0P()
