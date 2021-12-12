@@ -19,17 +19,32 @@ namespace EvalScripts
 
         private static void InitilizeIdentifers()
         {
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax1", Value = 12 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax2", Value = 12 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax3", Value = 12 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax4", Value = 12 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax5", Value = 12 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid1", Value = 0x55 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid2", Value = 0x55 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid3", Value = 0x55 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid4", Value = 0x55 });
-            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "$pid5", Value = 0x55 });
-        
+            //
+            // Registers
+            //
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rax", Value = 0x1 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rdx", Value = 0x3 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rbx", Value = 0x4 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rsp", Value = 0x5 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rbp", Value = 0x6 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rsi", Value = 0x7 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@rdi", Value = 0x8 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@r8", Value = 0x9 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@r9", Value = 0xa });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@r10", Value = 0xb });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@r11", Value = 0xc });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@r12", Value = 0xd });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION {IdentifierName = "@r13", Value = 0xe });
+
+            //
+            // Pseudo-registers
+            //
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION { IdentifierName = "$proc", Value = 0x0 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION { IdentifierName = "$thread", Value = 0x0 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION { IdentifierName = "$teb", Value = 0x0 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION { IdentifierName = "$ip", Value = 0x0 });
+            StatementGenerator.Identifiers.Add(new StatementGenerator.IDENTIFIER_DEFINITION { IdentifierName = "$buffer", Value = 0x0 });
+
         }
 
         private static void Generate(ACTION_TYPE Type)
