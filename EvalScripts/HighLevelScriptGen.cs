@@ -12,6 +12,8 @@ namespace EvalScripts
         {
             string Temp = Script.Replace("0n", "").Replace("0y", "0b").Replace("/", "//");
 
+            Temp = Temp.Replace("elsif", "else if");
+
             foreach (var item in StatementGenerator.Identifiers)
             {
 

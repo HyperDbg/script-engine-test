@@ -74,7 +74,7 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = IF_STATEMENT();
+                res = IF_STATEMENT(false);
                 depth -= 1;
                 return res;
             }
@@ -139,17 +139,25 @@ namespace EvalScripts
             return res;
         }
 
-        public static string IF_STATEMENT()
+        public static string IF_STATEMENT(bool AddStatement)
         {
             string res = string.Empty;
-            depth += 1; 
-            res = " if (" +  BOOLEAN_EXPRESSION() +  ")  {" + GET_CHECK_STATEMENT() + /* S() +*/ "}" + ELSIF_STATEMENT() + ELSE_STATEMENT() + END_OF_IF();
-         
+            depth += 1;
+
+            if (AddStatement)
+            {
+                res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT(AddStatement) + ELSE_STATEMENT(AddStatement) + END_OF_IF();
+            }
+            else
+            {
+                res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + "}" + ELSIF_STATEMENT(AddStatement) + ELSE_STATEMENT(AddStatement) + END_OF_IF();
+            }
+
             depth -= 1;
             return res;
         }
 
-        public static string ELSIF_STATEMENT()
+        public static string ELSIF_STATEMENT(bool AddStatement)
         {
             var r = random.Next(2);
             string res = string.Empty;
@@ -163,7 +171,14 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + /* S() + */ "}" + ELSIF_STATEMENT();
+                if (AddStatement)
+                {
+                    res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT(AddStatement);
+                }
+                else
+                {
+                    res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + "}" + ELSIF_STATEMENT(AddStatement);
+                }
                 depth -= 1;
                 return res;
             }
@@ -183,7 +198,7 @@ namespace EvalScripts
             return res;
         }
 
-        public static string ELSE_STATEMENT()
+        public static string ELSE_STATEMENT(bool AddStatement)
         {
             var r = random.Next(2);
             string res = string.Empty;
@@ -196,7 +211,15 @@ namespace EvalScripts
 
             if (r == 0)
             {
-                res = " else {" + GET_CHECK_STATEMENT() + /* S() +*/ "}";
+                if (AddStatement)
+                {
+                    res = " else {" + GET_CHECK_STATEMENT() + S() + "}";
+                }
+                else
+                {
+                    res = " else {" + GET_CHECK_STATEMENT() + "}";
+                }
+
                 depth -= 1;
                 return res;
             }
