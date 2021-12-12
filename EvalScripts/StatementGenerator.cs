@@ -262,7 +262,8 @@ namespace EvalScripts
         {
             string res = string.Empty;
             depth += 1;
-            res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { " + S() + "}";
+  
+            res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; }  " + /*S() + */"}";
             depth -= 1;
             return res;
         }
@@ -335,7 +336,7 @@ namespace EvalScripts
         {
             string res = string.Empty;
             string expr = string.Empty;
-            string[] Operators = { " ", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " != ", " = ", " > ", " < ", "((", "(", ")", "))" };
+            string[] Operators = { " ", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " ; ", " != ", " = ", " > ", " < ", "((", "(", ")", "))",  };
             var r = random.Next(0, Operators.Length);
             var r2 = random.Next(3);
 

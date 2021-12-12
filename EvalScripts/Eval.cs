@@ -70,6 +70,46 @@ namespace EvalScripts
             }
         } 
         
+
+        public static async Task<Tuple<bool, int>> EvalScriptRunForLoopAsync(string Script)
+        {
+
+            try
+            {
+                string finalCode = @"
+                
+                int tmp = 0;
+                void test_statement(int Token) {
+                    tmp = Token;
+                }
+
+                int tmp_counter = 0;
+                int x = 0;
+                    
+                " + Script + @"
+
+                test_statement(tmp_counter);     
+                int num = tmp;
+                ";
+                var setParam = await CSharpScript.RunAsync(finalCode);
+                var runCode = await setParam.ContinueWithAsync("num");
+                var x = runCode.ReturnValue;
+
+                //
+                // Script run without error
+                //
+                return new Tuple<bool, int>(true, (int)x);
+            }
+            catch (Exception)
+            {
+
+                //
+                // Script has error
+                //
+                return new Tuple<bool, int>(false, 0);
+            }
+        } 
+        
         public static Tuple<bool, int> EvalScriptRun(string Script)
         {
             /*

@@ -15,6 +15,7 @@ namespace EvalScripts
             CREATE_EXPRESSIONS,
             CREATE_CONDITIONAL_STATEMENTS,
             CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT,
+            CREATE_FOR_LOOP,
 
         }
 
@@ -90,7 +91,6 @@ namespace EvalScripts
             {
                 Sentence = StatementGenerator.IF_STATEMENT(true);
 
-
                 if (!(Sentence.Length <= Limit))
                 {
                     return false;
@@ -98,6 +98,19 @@ namespace EvalScripts
 
                 Script = Sentence;
                 EvalResult = HighLevelScriptGen.EvaluateConditionalStatement(Sentence, ref Result);
+
+            }
+            else if (Type == ACTION_TYPE.CREATE_FOR_LOOP)
+            {
+                Sentence = StatementGenerator.FOR_STATEMENT();
+
+                if (!(Sentence.Length <= Limit))
+                {
+                    return false;
+                }
+
+                Script = Sentence;
+                EvalResult = HighLevelScriptGen.EvaluateForLoops(Sentence, ref Result);
 
             }
 
@@ -133,6 +146,7 @@ namespace EvalScripts
             //
             // First of all we should initialize identifiers and their values
             //
+            
             InitilizeIdentifers();
 
             StreamWriter TestCaseWithErrorFile = new StreamWriter("test-cases-wrong.txt");
@@ -148,7 +162,7 @@ namespace EvalScripts
               // Generate(ACTION_TYPE.CREATE_EXPRESSIONS, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 150, Counter);
               // Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 10000, Counter);
 
-              bool Correctness =  Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
+              bool Correctness =  Generate(ACTION_TYPE.CREATE_FOR_LOOP, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
 
                 if (Correctness)
                 {
