@@ -115,8 +115,8 @@ namespace EvalScripts
             //
             InitilizeIdentifers();
 
-            // Generate(ACTION_TYPE.CREATE_EXPRESSIONS);
-            Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS);
+             Generate(ACTION_TYPE.CREATE_EXPRESSIONS);
+            //Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS);
         }
     }
 }

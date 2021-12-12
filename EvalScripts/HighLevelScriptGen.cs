@@ -15,7 +15,7 @@ namespace EvalScripts
             foreach (var item in StatementGenerator.Identifiers)
             {
 
-                Temp = Script.Replace(item.IdentifierName, item.Value.ToString("X"));
+                Temp = Temp.Replace(item.IdentifierName, "0x" + item.Value.ToString("X"));
             }
 
             return Temp;
