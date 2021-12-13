@@ -74,7 +74,7 @@ namespace EvalScripts
             }
         }
 
-        public static bool EvaluateForLoops(string Script, ref string Result)
+        public static bool EvaluateLoops(string Script, ref string Result)
         {
             //
             // Change script based on c# (convert script engine scripts to
@@ -85,7 +85,7 @@ namespace EvalScripts
             //
             // Evaluate the for loop statement
             //
-            var EvalResult = Eval.EvalScriptRunForLoopAsync(CSharpBasedString);
+            var EvalResult = Eval.EvalScriptRunLoopsAsync(CSharpBasedString);
 
             if (EvalResult.Result.Item1 == true)
             {

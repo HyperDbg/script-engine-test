@@ -80,19 +80,19 @@ namespace EvalScripts
             }
             else if (r == 1)
             {
-                res = WHILE_STATEMENT();
+                res = WHILE_STATEMENT(false);
                 depth -= 1;
                 return res;
             }
             else if (r == 2)
             {
-                res = DO_WHILE_STATEMENT();
+                res = DO_WHILE_STATEMENT(false);
                 depth -= 1;
                 return res;
             }
             else if (r == 3)
             {
-                res = FOR_STATEMENT();
+                res = FOR_STATEMENT(false);
                 depth -= 1;
                 return res;
             }
@@ -240,30 +240,58 @@ namespace EvalScripts
             return res;
         }
 
-        public static string WHILE_STATEMENT()
+        public static string WHILE_STATEMENT(bool AddStatement)
         {
             string res = string.Empty;
             depth += 1;
-            res = " while  (" + BOOLEAN_EXPRESSION() + ")  { " + S() + " }";
+
+            if (AddStatement)
+            {
+                res = " while  (" + BOOLEAN_EXPRESSION() + ")  { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + " }";
+            }
+            else
+            {
+                res = " while  (" + BOOLEAN_EXPRESSION() + ")  { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } }";
+            }
+
             depth -= 1;
             return res;
         }
 
-        public static string DO_WHILE_STATEMENT()
+        public static string DO_WHILE_STATEMENT(bool AddStatement)
         {
             string res = string.Empty;
             depth += 1;
-            res = " do  {" + S() + "} while ( " + BOOLEAN_EXPRESSION() + ") ;";
+
+            if (AddStatement)
+            {
+                res = " do  {  tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + "} while ( " + BOOLEAN_EXPRESSION() + ") ;";
+            }
+            else
+            {
+                res = " do  {  tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } } while ( " + BOOLEAN_EXPRESSION() + ") ;";
+
+            }
+
             depth -= 1;
             return res;
         }
 
-        public static string FOR_STATEMENT()
+        public static string FOR_STATEMENT(bool AddStatement)
         {
             string res = string.Empty;
             depth += 1;
-  
-            res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; }  " + /*S() + */"}";
+
+            if (!AddStatement)
+            {
+                res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; }  " + /*S() + */"}";
+            }
+            else
+            {
+                res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; }  " + S() + "}";
+
+            }
+
             depth -= 1;
             return res;
         }

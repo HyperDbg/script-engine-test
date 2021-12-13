@@ -71,7 +71,7 @@ namespace EvalScripts
         } 
         
 
-        public static async Task<Tuple<bool, int>> EvalScriptRunForLoopAsync(string Script)
+        public static async Task<Tuple<bool, int>> EvalScriptRunLoopsAsync(string Script)
         {
 
             try

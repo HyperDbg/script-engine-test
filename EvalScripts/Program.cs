@@ -16,6 +16,12 @@ namespace EvalScripts
             CREATE_CONDITIONAL_STATEMENTS,
             CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT,
             CREATE_FOR_LOOP,
+            CREATE_FOR_LOOP_COMBINED_WITH_OTHER_STATEMENT,
+            CREATE_WHILE_LOOP,
+            CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT,
+            CREATE_DO_WHILE_LOOP,
+            CREATE_DO_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT,
+
 
         }
 
@@ -102,7 +108,7 @@ namespace EvalScripts
             }
             else if (Type == ACTION_TYPE.CREATE_FOR_LOOP)
             {
-                Sentence = StatementGenerator.FOR_STATEMENT();
+                Sentence = StatementGenerator.FOR_STATEMENT(false);
 
                 if (!(Sentence.Length <= Limit))
                 {
@@ -110,7 +116,72 @@ namespace EvalScripts
                 }
 
                 Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateForLoops(Sentence, ref Result);
+                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+            }
+            else if (Type == ACTION_TYPE.CREATE_FOR_LOOP_COMBINED_WITH_OTHER_STATEMENT)
+            {
+                Sentence = StatementGenerator.FOR_STATEMENT(true);
+
+                if (!(Sentence.Length <= Limit))
+                {
+                    return false;
+                }
+
+                Script = Sentence;
+                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+            }
+            else if (Type == ACTION_TYPE.CREATE_WHILE_LOOP)
+            {
+                Sentence = StatementGenerator.WHILE_STATEMENT(false);
+
+                if (!(Sentence.Length <= Limit))
+                {
+                    return false;
+                }
+
+                Script = Sentence;
+                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+            }
+            else if (Type == ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT)
+            {
+                Sentence = StatementGenerator.WHILE_STATEMENT(true);
+
+                if (!(Sentence.Length <= Limit))
+                {
+                    return false;
+                }
+
+                Script = Sentence;
+                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+            }
+            else if (Type == ACTION_TYPE.CREATE_DO_WHILE_LOOP)
+            {
+                Sentence = StatementGenerator.DO_WHILE_STATEMENT(false);
+
+                if (!(Sentence.Length <= Limit))
+                {
+                    return false;
+                }
+
+                Script = Sentence;
+                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+            }
+            else if (Type == ACTION_TYPE.CREATE_DO_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT)
+            {
+                Sentence = StatementGenerator.DO_WHILE_STATEMENT(true);
+
+                if (!(Sentence.Length <= Limit))
+                {
+                    return false;
+                }
+
+                Script = Sentence;
+                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
 
             }
 
@@ -162,13 +233,13 @@ namespace EvalScripts
               // Generate(ACTION_TYPE.CREATE_EXPRESSIONS, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 150, Counter);
               // Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 10000, Counter);
 
-              bool Correctness =  Generate(ACTION_TYPE.CREATE_FOR_LOOP, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
+              bool Correctness =  Generate(ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
 
                 if (Correctness)
                 {
                     CounterOfCorrectCases++;
 
-                    if (CounterOfCorrectCases >= 10)
+                    if (CounterOfCorrectCases >= 1000)
                     {
                         break;
                     }
