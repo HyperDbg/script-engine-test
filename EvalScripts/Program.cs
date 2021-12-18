@@ -53,12 +53,14 @@ namespace EvalScripts
 
         }
 
-        private static bool Generate(
+        private static bool GenerateStatement
+            (
             ACTION_TYPE Type,
             StreamWriter TestCaseWithErrorFile,
             StreamWriter TestCaseWithoutErrorFile,
             int Limit,
-            UInt64 Counter)
+            UInt64 Counter
+            )
         {
 
             string Result = string.Empty;
@@ -209,7 +211,8 @@ namespace EvalScripts
             }
 
 
-            Console.WriteLine(Counter + '\n' + Script + '\n' + Result + '\n');
+            Console.WriteLine(Counter + "\n\n" + Script + "\n\n" + Result + "\n");
+            Console.WriteLine("------------------------------------------------------------");
 
             if (EvalResult)
             {
@@ -236,19 +239,17 @@ namespace EvalScripts
             }
         }
 
-        static void Main(string[] args)
+        static void Generate(string CaseName, ACTION_TYPE Type, int MustCorrectCases, int CharacterLimit)
         {
             UInt64 Counter = 0;
             int CounterOfCorrectCases = 0;
+            bool Correctness;
 
             //
-            // First of all we should initialize identifiers and their values
+            // Open files to save the results
             //
-
-            InitilizeIdentifers();
-
-            StreamWriter TestCaseWithErrorFile = new StreamWriter("test-cases-wrong.txt");
-            StreamWriter TestCaseWithoutErrorFile = new StreamWriter("test-cases-correct.txt");
+            StreamWriter TestCaseWithErrorFile = new StreamWriter(@"..\..\..\TestCases\" + CaseName + "-wrong.txt");
+            StreamWriter TestCaseWithoutErrorFile = new StreamWriter(@"..\..\..\TestCases\" + CaseName + "-correct.txt");
 
             //
             // This the count of correct values
@@ -257,25 +258,47 @@ namespace EvalScripts
             {
                 Counter++;
 
-                // Generate(ACTION_TYPE.CREATE_EXPRESSIONS, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 150, Counter);
-                // Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 10000, Counter);
-
-                bool Correctness = Generate(ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
+                Correctness = GenerateStatement(Type, TestCaseWithErrorFile, TestCaseWithoutErrorFile, CharacterLimit, Counter);
 
                 if (Correctness)
                 {
                     CounterOfCorrectCases++;
 
-                    if (CounterOfCorrectCases >= 1000)
+                    if (CounterOfCorrectCases >= MustCorrectCases)
                     {
                         break;
                     }
                 }
-
             }
 
+            //
+            // Close the files
+            //
             TestCaseWithErrorFile.Close();
             TestCaseWithoutErrorFile.Close();
+        }
+
+        static void Main(string[] args)
+        {
+            //
+            // First of all we should initialize identifiers and their values
+            //
+            InitilizeIdentifers();
+
+            //
+            // Generate test-cases
+            //
+
+            // Generate("01-expressions", ACTION_TYPE.CREATE_EXPRESSIONS, 100000, 200);
+            // Generate("02-conditional-statements", ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS, 1000, 1000);
+            // Generate("03-conditional-statements-with-statements", ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT, 100, 5000);
+            // Generate("04-while-loop", ACTION_TYPE.CREATE_WHILE_LOOP, 1000, 200); 
+            // Generate("05-while-loop-with-statements", ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT, 100, 500); 
+            // Generate("06-do-while-loop", ACTION_TYPE.CREATE_DO_WHILE_LOOP, 1000, 500); 
+            // Generate("07-do-while-loop-with-statements", ACTION_TYPE.CREATE_DO_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT, 300, 1000); 
+
+             Generate("08-for-loop", ACTION_TYPE.CREATE_FOR_LOOP, 100, 200); // wrong
+            // Generate("09-for-loop-with-statements", ACTION_TYPE.CREATE_FOR_LOOP_COMBINED_WITH_OTHER_STATEMENT, 10, 200); // wrong
 
         }
     }

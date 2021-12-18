@@ -72,7 +72,7 @@ namespace EvalScripts
 
         public static string STATEMENT()
         {
-            var RandomNum = Rand.Next(8);
+            var RandomNum = Rand.Next(11);
             string Result = string.Empty;
 
             Depth += 1;
@@ -130,7 +130,28 @@ namespace EvalScripts
 
                 case 7:
 
-                    Result = " continue;";
+                    Result = " /* This is a comment */";
+                    Depth -= 1;
+
+                    return Result;
+                    
+                case 8:
+
+                    Result = " // /* This is a comment ";
+                    Depth -= 1;
+
+                    return Result;
+                    
+                case 9:
+
+                    Result = " /* This is a not closed comment";
+                    Depth -= 1;
+
+                    return Result;
+                    
+                case 10:
+
+                    Result = " This is a not opened comment */";
                     Depth -= 1;
 
                     return Result;
