@@ -11,18 +11,16 @@ namespace EvalScripts
     {
         public static async Task<Tuple<bool, int>> EvalStatementAsync(string Statement)
         {
-            // Statement = "5 + 5";
-
             try
             {
-                var setParam = await CSharpScript.RunAsync("var num = " + Statement + ";");
-                var runCode = await setParam.ContinueWithAsync("num");
-                var x = runCode.ReturnValue;
+                var SetParam = await CSharpScript.RunAsync("var num = " + Statement + ";");
+                var RunCode = await SetParam.ContinueWithAsync("num");
+                var X = RunCode.ReturnValue;
 
                 //
                 // Script run without error
                 //
-                return new Tuple<bool, int>(true, (int)x);
+                return new Tuple<bool, int>(true, (int)X);
             }
             catch (Exception)
             {
@@ -37,10 +35,9 @@ namespace EvalScripts
 
         public static async Task<Tuple<bool, int>> EvalScriptRunConditionalStatementAsync(string Script)
         {
-
             try
             {
-                string finalCode = @"
+                string FinalCode = @"
                 
                 int tmp = 0;
                 void test_statement(int Token) {
@@ -50,15 +47,16 @@ namespace EvalScripts
                 " + Script + @"
                 
                 int num = tmp;
+
                 ";
-                var setParam = await CSharpScript.RunAsync(finalCode);
-                var runCode = await setParam.ContinueWithAsync("num");
-                var x = runCode.ReturnValue;
+                var SetParam = await CSharpScript.RunAsync(FinalCode);
+                var RunCode = await SetParam.ContinueWithAsync("num");
+                var X = RunCode.ReturnValue;
 
                 //
                 // Script run without error
                 //
-                return new Tuple<bool, int>(true, (int)x);
+                return new Tuple<bool, int>(true, (int)X);
             }
             catch (Exception)
             {
@@ -70,13 +68,11 @@ namespace EvalScripts
             }
         } 
         
-
         public static async Task<Tuple<bool, int>> EvalScriptRunLoopsAsync(string Script)
         {
-
             try
             {
-                string finalCode = @"
+                string FinalCode = @"
                 
                 int tmp = 0;
                 void test_statement(int Token) {
@@ -90,15 +86,17 @@ namespace EvalScripts
 
                 test_statement(tmp_counter);     
                 int num = tmp;
+
                 ";
-                var setParam = await CSharpScript.RunAsync(finalCode);
-                var runCode = await setParam.ContinueWithAsync("num");
-                var x = runCode.ReturnValue;
+
+                var SetParam = await CSharpScript.RunAsync(FinalCode);
+                var RunCode = await SetParam.ContinueWithAsync("num");
+                var X = RunCode.ReturnValue;
 
                 //
                 // Script run without error
                 //
-                return new Tuple<bool, int>(true, (int)x);
+                return new Tuple<bool, int>(true, (int)X);
             }
             catch (Exception)
             {
@@ -112,18 +110,6 @@ namespace EvalScripts
         
         public static Tuple<bool, int> EvalScriptRun(string Script)
         {
-            /*
-            bool result = EvalScriptRun(@"
-            
-            for (int i = 0; i < 100; i++) 
-            {
-                System.Console.WriteLine(i);
-            }
-
-            ");
-            
-            */
-
             try
             {
                 CSharpScript.EvaluateAsync(Script);

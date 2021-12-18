@@ -16,7 +16,6 @@ namespace EvalScripts
 
             foreach (var item in StatementGenerator.Identifiers)
             {
-
                 Temp = Temp.Replace(item.IdentifierName, "0x" + item.Value.ToString("X"));
             }
 
@@ -98,6 +97,5 @@ namespace EvalScripts
                 return false;
             }
         }
-
     }
 }

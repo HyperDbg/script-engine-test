@@ -8,408 +8,457 @@ namespace EvalScripts
 {
     class StatementGenerator
     {
-
-        static Random random = new Random();
-        static int depth = 0;
-        const int MAX_DEPTH = 10;
-        public const int SizeOfStructOfIdentifiers = 50;
+        //
+        // Structures
+        //
         public struct IDENTIFIER_DEFINITION
         {
-
             public string IdentifierName;
             public int Value;
         }
 
+        //
+        // Global variables and constants
+        //
+        static Random Rand = new Random();
+        static int Depth = 0;
+        const int MAX_DEPTH = 10;
+        public const int SizeOfStructOfIdentifiers = 50;
         public static List<IDENTIFIER_DEFINITION> Identifiers = new List<IDENTIFIER_DEFINITION>();
 
         public static void ResetDepth()
         {
-            depth = 0;
+            Depth = 0;
         }
 
         public static string GET_CHECK_STATEMENT()
         {
-            var token = random.Next(10000);
-            string res = string.Empty;
+            var token = Rand.Next(10000);
+            string Result = string.Empty;
 
-            res = " test_statement(" + "0x" + token.ToString("X") + "); ";
-            return res;
+            Result = " test_statement(" + "0x" + token.ToString("X") + "); ";
+            return Result;
         }
 
         public static string S()
         {
 
-            var r = random.Next(2);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(2);
+            string Result = string.Empty;
 
-            depth += 1;
+            Depth += 1;
 
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = STATEMENT() + " " + S();
-                depth -= 1;
-                return res;
+                Result = STATEMENT() + " " + S();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
 
-            return string.Empty;
         }
 
         public static string STATEMENT()
         {
-            var r = random.Next(8);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(8);
+            string Result = string.Empty;
 
-            depth += 1;
+            Depth += 1;
 
-            if (r == 0)
+            switch (RandomNum)
             {
-                res = IF_STATEMENT(false);
-                depth -= 1;
-                return res;
-            }
-            else if (r == 1)
-            {
-                res = WHILE_STATEMENT(false);
-                depth -= 1;
-                return res;
-            }
-            else if (r == 2)
-            {
-                res = DO_WHILE_STATEMENT(false);
-                depth -= 1;
-                return res;
-            }
-            else if (r == 3)
-            {
-                res = FOR_STATEMENT(false);
-                depth -= 1;
-                return res;
-            }
-            else if (r == 4)
-            {
-                res = ASSIGN_STATEMENT() + ";";
-                depth -= 1;
-                return res;
-            }
-            else if (r == 5)
-            {
-                res = CALL_FUNC_STATEMENT() + ";";
-                depth -= 1;
-                return res;
-            }
-            else if (r == 6)
-            {
-                res = " break;";
-                depth -= 1;
-                return res;
-            }
-            else if (r == 7)
-            {
-                res = " continue;";
-                depth -= 1;
-                return res;
-            }
+                case 0:
 
-            return string.Empty;
+                    Result = IF_STATEMENT(false);
+                    Depth -= 1;
+
+                    return Result;
+
+                case 1:
+
+                    Result = WHILE_STATEMENT(false);
+                    Depth -= 1;
+
+                    return Result;
+
+                case 2:
+
+                    Result = DO_WHILE_STATEMENT(false);
+                    Depth -= 1;
+
+                    return Result;
+
+                case 3:
+
+                    Result = FOR_STATEMENT(false);
+                    Depth -= 1;
+
+                    return Result;
+
+                case 4:
+
+                    Result = ASSIGN_STATEMENT() + ";";
+                    Depth -= 1;
+
+                    return Result;
+
+                case 5:
+
+                    Result = CALL_FUNC_STATEMENT() + ";";
+                    Depth -= 1;
+
+                    return Result;
+
+                case 6:
+
+                    Result = " break;";
+                    Depth -= 1;
+
+                    return Result;
+
+                case 7:
+
+                    Result = " continue;";
+                    Depth -= 1;
+
+                    return Result;
+
+                default:
+
+                    return string.Empty;
+
+            }
         }
 
         public static string CALL_FUNC_STATEMENT()
         {
-            string res = string.Empty;
-            return res;
+            string Result = string.Empty;
+
+            return Result;
         }
 
         public static string ASSIGN_STATEMENT()
         {
-            string res = string.Empty;
-            depth += 1;
-            res = L_VALUE() + " = " + EXPRESSION() + " " + NULL();
-            depth -= 1;
-            return res;
+            string Result = string.Empty;
+
+            Depth += 1;
+
+            Result = L_VALUE() + " = " + EXPRESSION() + " " + NULL();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string IF_STATEMENT(bool AddStatement)
         {
-            string res = string.Empty;
-            depth += 1;
+            string Result = string.Empty;
+
+            Depth += 1;
 
             if (AddStatement)
             {
-                res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT(AddStatement) + ELSE_STATEMENT(AddStatement) + END_OF_IF();
+                Result = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT(AddStatement) + ELSE_STATEMENT(AddStatement) + END_OF_IF();
             }
             else
             {
-                res = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + "}" + ELSIF_STATEMENT(AddStatement) + ELSE_STATEMENT(AddStatement) + END_OF_IF();
+                Result = " if (" + BOOLEAN_EXPRESSION() + ")  {" + GET_CHECK_STATEMENT() + "}" + ELSIF_STATEMENT(AddStatement) + ELSE_STATEMENT(AddStatement) + END_OF_IF();
             }
 
-            depth -= 1;
-            return res;
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string ELSIF_STATEMENT(bool AddStatement)
         {
-            var r = random.Next(2);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(2);
+            string Result = string.Empty;
 
-            depth += 1;
+            Depth += 1;
 
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
+
                 if (AddStatement)
                 {
-                    res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT(AddStatement);
+                    Result = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + S() + "}" + ELSIF_STATEMENT(AddStatement);
                 }
                 else
                 {
-                    res = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + "}" + ELSIF_STATEMENT(AddStatement);
+                    Result = " elsif (" + BOOLEAN_EXPRESSION() + ") {" + GET_CHECK_STATEMENT() + "}" + ELSIF_STATEMENT(AddStatement);
                 }
-                depth -= 1;
-                return res;
-            }
-            else if (r == 1)
-            {
-                res = ELSIF_STATEMENTP();
-                depth -= 1;
-                return res;
-            }
+                Depth -= 1;
 
-            return string.Empty;
+                return Result;
+
+            }
+            else
+            {
+
+                Result = ELSIF_STATEMENTP();
+                Depth -= 1;
+
+                return Result;
+            }
         }
 
         public static string ELSIF_STATEMENTP()
         {
-            string res = string.Empty;
-            return res;
+            string Result = string.Empty;
+
+            return Result;
         }
 
         public static string ELSE_STATEMENT(bool AddStatement)
         {
-            var r = random.Next(2);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(2);
+            string Result = string.Empty;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
                 if (AddStatement)
                 {
-                    res = " else {" + GET_CHECK_STATEMENT() + S() + "}";
+                    Result = " else {" + GET_CHECK_STATEMENT() + S() + "}";
                 }
                 else
                 {
-                    res = " else {" + GET_CHECK_STATEMENT() + "}";
+                    Result = " else {" + GET_CHECK_STATEMENT() + "}";
                 }
 
-                depth -= 1;
-                return res;
-            }
-            else if (r == 1)
-            {
-                res = "";
-                depth -= 1;
-                return res;
-            }
+                Depth -= 1;
 
-            return string.Empty;
+                return Result;
+            }
+            else
+            {
+                Result = "";
+                Depth -= 1;
+
+                return Result;
+            }
 
         }
 
         public static string END_OF_IF()
         {
-            string res = string.Empty;
-            return res;
+            string Result = string.Empty;
+
+            return Result;
         }
 
         public static string WHILE_STATEMENT(bool AddStatement)
         {
-            string res = string.Empty;
-            depth += 1;
+            string Result = string.Empty;
+
+            Depth += 1;
 
             if (AddStatement)
             {
-                res = " while  (" + BOOLEAN_EXPRESSION() + ")  { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + " }";
+                Result = " while  (" + BOOLEAN_EXPRESSION() + ")  { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + " }";
             }
             else
             {
-                res = " while  (" + BOOLEAN_EXPRESSION() + ")  { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } }";
+                Result = " while  (" + BOOLEAN_EXPRESSION() + ")  { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } }";
             }
 
-            depth -= 1;
-            return res;
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string DO_WHILE_STATEMENT(bool AddStatement)
         {
-            string res = string.Empty;
-            depth += 1;
+            string Result = string.Empty;
+
+            Depth += 1;
 
             if (AddStatement)
             {
-                res = " do  {  tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + "} while ( " + BOOLEAN_EXPRESSION() + ") ;";
+                Result = " do  {  tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + "} while ( " + BOOLEAN_EXPRESSION() + ") ;";
             }
             else
             {
-                res = " do  {  tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } } while ( " + BOOLEAN_EXPRESSION() + ") ;";
-
+                Result = " do  {  tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } } while ( " + BOOLEAN_EXPRESSION() + ") ;";
             }
 
-            depth -= 1;
-            return res;
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string FOR_STATEMENT(bool AddStatement)
         {
-            string res = string.Empty;
-            depth += 1;
+            string Result = string.Empty;
+
+            Depth += 1;
 
             if (!AddStatement)
             {
-                res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; }  " + /*S() + */"}";
+                Result = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + "}";
             }
             else
             {
-                res = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; }  " + S() + "}";
-
+                Result = " for (" + SIMPLE_ASSIGNMENT() + "; " + BOOLEAN_EXPRESSION() + ";" + INC_DEC() + ") { tmp_counter = tmp_counter + 1; if (tmp_counter >= 0x1000) { break; } " + S() + "}";
             }
 
-            depth -= 1;
-            return res;
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string SIMPLE_ASSIGNMENT()
         {
-            var r = random.Next(2);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(2);
+            string Result = string.Empty;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = L_VALUE() + "= " + EXPRESSION() + SIMPLE_ASSIGNMENTP();
-                depth -= 1;
-                return res;
-            }
-            else if (r == 1)
-            {
-                res = "";
-                depth -= 1;
-                return res;
-            }
+                Result = L_VALUE() + "= " + EXPRESSION() + SIMPLE_ASSIGNMENTP();
+                Depth -= 1;
 
-            return string.Empty;
+                return Result;
+            }
+            else
+            {
+                Result = "";
+                Depth -= 1;
+
+                return Result;
+            }
 
         }
 
         public static string SIMPLE_ASSIGNMENTP()
         {
-            string res = string.Empty;
-            return res;
+            string Result = string.Empty;
+
+            return Result;
         }
 
         public static string INC_DEC()
         {
-            string res = string.Empty;
-            depth += 1;
-            res = L_VALUE() + INC_DECP();
-            depth -= 1;
-            return res;
+            string Result = string.Empty;
+
+            Depth += 1;
+
+            Result = L_VALUE() + INC_DECP();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string INC_DECP()
         {
-            string res = string.Empty;
-            depth += 1;
-            res = "--" + DECP();
-            depth -= 1;
-            return res;
+            string Result = string.Empty;
+
+            Depth += 1;
+
+            Result = "--" + DECP();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string INCP()
         {
-            string res = string.Empty;
-            return res;
+            string Result = string.Empty;
+
+            return Result;
         }
 
         public static string DECP()
         {
-            string res = string.Empty;
-            return res;
+            string Result = string.Empty;
+
+            return Result;
         }
 
         public static string BOOLEAN_EXPRESSION()
         {
-            string res = string.Empty;
-            string expr = string.Empty;
-            string[] Operators = { " ", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " ; ", " != ", " = ", " > ", " < ", "((", "(", ")", "))",  };
-            var r = random.Next(0, Operators.Length);
-            var r2 = random.Next(3);
+            string Result = string.Empty;
+            string Expr = string.Empty;
+            string[] Operators = { " ", " == ", " <= ", " >= ", " <> ", " >< ", " ! ", " ; ", " != ", " = ", " > ", " < ", "((", "(", ")", "))", };
+            var RandomNum = Rand.Next(0, Operators.Length);
+            var RandomNum2 = Rand.Next(3);
 
-            depth += 1;
+            Depth += 1;
 
+            Expr = EXPRESSION();
 
-            expr = EXPRESSION();
-
-
-
-            if (r2 == 0)
+            if (RandomNum2 == 0)
             {
                 //
                 // Two sides are equal
                 //
-                res = expr + Operators[r] + expr + SIMPLE_ASSIGNMENTP();
-                depth -= 1;
-                return res;
+                Result = Expr + Operators[RandomNum] + Expr + SIMPLE_ASSIGNMENTP();
+                Depth -= 1;
+
+                return Result;
             }
             else
             {
-
                 //
                 // Two sides are not equal 
                 //
-                string expr2 = EXPRESSION(true);
+                string Expr2 = EXPRESSION(true);
 
-                if (expr2.Length >= 150)
+                if (Expr2.Length >= 150)
                 {
-                    expr2 = EXPRESSION(true);
+                    Expr2 = EXPRESSION(true);
                 }
 
-                res = expr + Operators[r] + expr2 + SIMPLE_ASSIGNMENTP();
-                depth -= 1;
-                return res;
+                Result = Expr + Operators[RandomNum] + Expr2 + SIMPLE_ASSIGNMENTP();
+                Depth -= 1;
+
+                return Result;
             }
         }
 
         public static string EXPRESSION()
         {
-            string res = string.Empty;
-            depth += 1;
-            res = E1() + E0P();
-            depth -= 1;
-            return res;
+            string Result = string.Empty;
+
+            Depth += 1;
+
+            Result = E1() + E0P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string EXPRESSION(bool ForceToBeValid)
@@ -422,7 +471,6 @@ namespace EvalScripts
             }
             else
             {
-
                 while (true)
                 {
                     string Expr = EXPRESSION();
@@ -434,423 +482,437 @@ namespace EvalScripts
                 }
 
             }
-
-            return string.Empty;
-
         }
 
         public static string E0P()
         {
-            var r = random.Next(2);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(2);
+            string Result = string.Empty;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " | " + E1() + E0P();
-                depth -= 1;
-                return res;
+                Result = " | " + E1() + E0P();
+                Depth -= 1;
 
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E1()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E2() + E1P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E2() + E1P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E1P()
         {
-            var r = random.Next(2);
-            string res = string.Empty;
+            var RandomNum = Rand.Next(2);
+            string Result = string.Empty;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " ^ " + E2() + E1P();
-                depth -= 1;
-                return res;
+                Result = " ^ " + E2() + E1P();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E2()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E3() + E2P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E3() + E2P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E2P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            var r = random.Next(2);
+            var RandomNum = Rand.Next(2);
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " & " + E3() + E2P();
-                depth -= 1;
-                return res;
+                Result = " & " + E3() + E2P();
+                Depth -= 1;
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E3()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E4() + E3P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E4() + E3P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E3P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            var r = random.Next(2);
+            var RandomNum = Rand.Next(2);
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " >> " + E4() + E3P();
-                depth -= 1;
-                return res;
+                Result = " >> " + E4() + E3P();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E4()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E5() + E4P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E5() + E4P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E4P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
+            var RandomNum = Rand.Next(2);
 
-            var r = random.Next(2);
+            Depth += 1;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " << " + E5() + E4P();
-                depth -= 1;
-                return res;
+                Result = " << " + E5() + E4P();
+                Depth -= 1;
+                return Result;
             }
-
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E5()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E6() + E5P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E6() + E5P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E5P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            var r = random.Next(2);
+            var RandomNum = Rand.Next(2);
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            Depth += 1;
+
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " + " + E6() + E5P();
-                depth -= 1;
-                return res;
+                Result = " + " + E6() + E5P();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E6()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E7() + E6P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E7() + E6P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E6P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
+            var RandomNum = Rand.Next(2);
 
-            var r = random.Next(2);
+            Depth += 1;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " - " + E7() + E6P();
-                depth -= 1;
-                return res;
+                Result = " - " + E7() + E6P();
+                Depth -= 1;
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E7()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E8() + E7P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E8() + E7P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E7P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
+            var RandomNum = Rand.Next(2);
 
-            var r = random.Next(2);
+            Depth += 1;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " * " + E8() + E7P();
-                depth -= 1;
-                return res;
+                Result = " * " + E8() + E7P();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E8()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E9() + E8P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E9() + E8P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E8P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
+            var RandomNum = Rand.Next(2);
 
-            var r = random.Next(2);
+            Depth += 1;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " / " + E9() + E8P();
-                depth -= 1;
-                return res;
+                Result = " / " + E9() + E8P();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E9()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E10() + E9P();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E10() + E9P();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E9P()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
+            var RandomNum = Rand.Next(2);
 
-            var r = random.Next(2);
+            Depth += 1;
 
-            depth += 1;
-            if (depth >= MAX_DEPTH)
+            if (Depth >= MAX_DEPTH)
             {
-                r = 1;
+                RandomNum = 1;
             }
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = " % " + E10() + E9P();
-                depth -= 1;
-                return res;
+                Result = " % " + E10() + E9P();
+                Depth -= 1;
+
+                return Result;
             }
-            else if (r == 1)
+            else
             {
-                res = "";
-                depth -= 1;
-                return res;
+                Result = "";
+                Depth -= 1;
+
+                return Result;
             }
-
-            return string.Empty;
-
         }
 
         public static string E10()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            depth += 1;
-            res = E12();
-            depth -= 1;
-            return res;
+            Depth += 1;
+
+            Result = E12();
+
+            Depth -= 1;
+
+            return Result;
         }
 
         public static string E13()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            res = "";
-            return res;
+            Result = "";
+
+            return Result;
         }
         public static string L_VALUE()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
 
-            var r = random.Next(2);
+            var RandomNum = Rand.Next(2);
 
-            if (r == 0)
+            if (RandomNum == 0)
             {
-                res = "x";  // id
-                return res;
+                Result = "x";  // id
+                return Result;
             }
-            else if (r == 1)
+            else if (RandomNum == 1)
             {
-                res = "@rax"; // register
-                return res;
+                Result = "@rax"; // register
+                return Result;
             }
 
             return string.Empty;
@@ -858,88 +920,95 @@ namespace EvalScripts
 
         public static string NULL()
         {
-            string res = string.Empty;
-            return res;
-        }
- 
+            string Result = string.Empty;
 
+            return Result;
+
+        }
 
         public static string E12()
         {
-            string res = string.Empty;
+            string Result = string.Empty;
+            var RandomNum = Rand.Next(0, 8 + Identifiers.Count);
+            var RandomNum2 = 0;
 
-            var r = random.Next(0, 8 + Identifiers.Count);
+            Depth += 1;
 
-            depth += 1;
+            switch (RandomNum)
+            {
+                case 0:
 
-            if (r == 0)
-            {
-                res = "(" + EXPRESSION() + ")";
-                depth -= 1;
-                return res;
-            }
-            else if (r == 1)
-            {
-                var ri = random.Next(0, 20);
-                res = "0x" + ri.ToString("X");  // hex
-                depth -= 1;
-                return res;
-            }
-            else if (r == 2)
-            {
-                var ri = random.Next(0, 20);
-                res = "0n" + ri.ToString(); // decimal
-                depth -= 1;
-                return res;
-            }
-            else if (r == 3)
-            {
-                var ri = random.Next(0, 20);
-                //
-                // C# don't support prefix for octals
-                //
-                // res = "0t" + Convert.ToString(ri, 8); // octal
-                res = Convert.ToString(ri, 8); // octal
-                depth -= 1;
-                return res;
-            }
-            else if (r == 4)
-            {
-                var ri = random.Next(0, 20);
-                res = "0y" + Convert.ToString(ri, 2);  // binary
-                depth -= 1;
-                return res;
-            }
-            else if (r == 5)
-            {
-                res = "-" + E12() + E13();
-                depth -= 1;
-                return res;
-            }
-            else if (r == 6)
-            {
-                res = "+" + E12() + E13();
-                depth -= 1;
-                return res;
-            }
-            else if (r == 7)
-            {
-                res = "~" + E12() + E13();
-                depth -= 1;
-                return res;
-            }
-            else 
-            {
-                var ri = random.Next(0, Identifiers.Count);
+                    Result = "(" + EXPRESSION() + ")";
+                    Depth -= 1;
 
-                res = Identifiers[ri].IdentifierName; // register, pesudo-registers, ids whatever
-                depth -= 1;
-                return res;
-            }
-           
+                    return Result;
 
-            return string.Empty;
+                case 1:
+
+                    RandomNum2 = Rand.Next(0, 20);
+                    Result = "0x" + RandomNum2.ToString("X");  // hex
+                    Depth -= 1;
+
+                    return Result;
+
+                case 2:
+
+                    RandomNum2 = Rand.Next(0, 20);
+                    Result = "0n" + RandomNum2.ToString(); // decimal
+                    Depth -= 1;
+
+                    return Result;
+
+                case 3:
+
+                    RandomNum2 = Rand.Next(0, 20);
+
+                    //
+                    // C# don't support prefix for octals
+                    //
+                    // Result = "0t" + Convert.ToString(RandomNum2, 8); // octal
+                    Result = Convert.ToString(RandomNum2, 8); // octal
+                    Depth -= 1;
+
+                    return Result;
+
+                case 4:
+
+                    RandomNum2 = Rand.Next(0, 20);
+                    Result = "0y" + Convert.ToString(RandomNum2, 2);  // binary
+                    Depth -= 1;
+
+                    return Result;
+
+                case 5:
+
+                    Result = "-" + E12() + E13();
+                    Depth -= 1;
+
+                    return Result;
+
+                case 6:
+
+                    Result = "+" + E12() + E13();
+                    Depth -= 1;
+
+                    return Result;
+
+                case 7:
+
+                    Result = "~" + E12() + E13();
+                    Depth -= 1;
+
+                    return Result;
+
+                default:
+
+                    RandomNum2 = Rand.Next(0, Identifiers.Count);
+                    Result = Identifiers[RandomNum2].IdentifierName; // register, pesudo-registers, ids whatever
+                    Depth -= 1;
+
+                    return Result;
+            }
         }
-
     }
 }

@@ -21,8 +21,6 @@ namespace EvalScripts
             CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT,
             CREATE_DO_WHILE_LOOP,
             CREATE_DO_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT,
-
-
         }
 
         private static void InitilizeIdentifers()
@@ -55,135 +53,161 @@ namespace EvalScripts
 
         }
 
-        private static bool Generate(ACTION_TYPE Type, StreamWriter TestCaseWithErrorFile, StreamWriter TestCaseWithoutErrorFile, int Limit, UInt64 Counter)
+        private static bool Generate(
+            ACTION_TYPE Type,
+            StreamWriter TestCaseWithErrorFile,
+            StreamWriter TestCaseWithoutErrorFile,
+            int Limit,
+            UInt64 Counter)
         {
+
             string Result = string.Empty;
             string Sentence = string.Empty;
             string Script = string.Empty;
             bool EvalResult = false;
 
-
             StatementGenerator.ResetDepth();
 
-            if (Type == ACTION_TYPE.CREATE_EXPRESSIONS)
+
+            switch (Type)
             {
-                Sentence = StatementGenerator.EXPRESSION();
+                case ACTION_TYPE.CREATE_EXPRESSIONS:
 
-                //
-                // Avoid big statements!
-                //
-                if (!(Sentence.Length <= Limit))
-                {
+                    Sentence = StatementGenerator.EXPRESSION();
+
+                    //
+                    // Avoid big statements!
+                    //
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = "x = " + Sentence + "; test_statement(x);";
+                    EvalResult = HighLevelScriptGen.EvaluateExpression(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS:
+
+                    Sentence = StatementGenerator.IF_STATEMENT(false);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateConditionalStatement(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT:
+
+                    Sentence = StatementGenerator.IF_STATEMENT(true);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateConditionalStatement(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_FOR_LOOP:
+
+                    Sentence = StatementGenerator.FOR_STATEMENT(false);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_FOR_LOOP_COMBINED_WITH_OTHER_STATEMENT:
+
+                    Sentence = StatementGenerator.FOR_STATEMENT(true);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_WHILE_LOOP:
+
+                    Sentence = StatementGenerator.WHILE_STATEMENT(false);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT:
+
+                    Sentence = StatementGenerator.WHILE_STATEMENT(true);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_DO_WHILE_LOOP:
+
+                    Sentence = StatementGenerator.DO_WHILE_STATEMENT(false);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+                    break;
+
+                case ACTION_TYPE.CREATE_DO_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT:
+
+                    Sentence = StatementGenerator.DO_WHILE_STATEMENT(true);
+
+                    if (!(Sentence.Length <= Limit))
+                    {
+                        return false;
+                    }
+
+                    Script = Sentence;
+                    EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
+
+                    break;
+
+                default:
+
+                    //
+                    // Invalid value
+                    //
                     return false;
-                }
-
-                Script = "x = " + Sentence + "; test_statement(x);";
-                EvalResult = HighLevelScriptGen.EvaluateExpression(Sentence, ref Result);
             }
-            else if (Type == ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS)
-            {
-                Sentence = StatementGenerator.IF_STATEMENT(false);
 
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateConditionalStatement(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT)
-            {
-                Sentence = StatementGenerator.IF_STATEMENT(true);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateConditionalStatement(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_FOR_LOOP)
-            {
-                Sentence = StatementGenerator.FOR_STATEMENT(false);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_FOR_LOOP_COMBINED_WITH_OTHER_STATEMENT)
-            {
-                Sentence = StatementGenerator.FOR_STATEMENT(true);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_WHILE_LOOP)
-            {
-                Sentence = StatementGenerator.WHILE_STATEMENT(false);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT)
-            {
-                Sentence = StatementGenerator.WHILE_STATEMENT(true);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_DO_WHILE_LOOP)
-            {
-                Sentence = StatementGenerator.DO_WHILE_STATEMENT(false);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
-
-            }
-            else if (Type == ACTION_TYPE.CREATE_DO_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT)
-            {
-                Sentence = StatementGenerator.DO_WHILE_STATEMENT(true);
-
-                if (!(Sentence.Length <= Limit))
-                {
-                    return false;
-                }
-
-                Script = Sentence;
-                EvalResult = HighLevelScriptGen.EvaluateLoops(Sentence, ref Result);
-
-            }
 
             Console.WriteLine(Counter + '\n' + Script + '\n' + Result + '\n');
 
@@ -194,7 +218,10 @@ namespace EvalScripts
                 TestCaseWithoutErrorFile.WriteLine(Result);
                 TestCaseWithoutErrorFile.WriteLine("$end$");
                 TestCaseWithoutErrorFile.Flush();
+
                 return true;
+
+
             }
             else
             {
@@ -203,10 +230,10 @@ namespace EvalScripts
                 TestCaseWithErrorFile.WriteLine(Result);
                 TestCaseWithErrorFile.WriteLine("$end$");
                 TestCaseWithErrorFile.Flush();
+
                 return false;
 
             }
-
         }
 
         static void Main(string[] args)
@@ -217,7 +244,7 @@ namespace EvalScripts
             //
             // First of all we should initialize identifiers and their values
             //
-            
+
             InitilizeIdentifers();
 
             StreamWriter TestCaseWithErrorFile = new StreamWriter("test-cases-wrong.txt");
@@ -230,10 +257,10 @@ namespace EvalScripts
             {
                 Counter++;
 
-              // Generate(ACTION_TYPE.CREATE_EXPRESSIONS, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 150, Counter);
-              // Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 10000, Counter);
+                // Generate(ACTION_TYPE.CREATE_EXPRESSIONS, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 150, Counter);
+                // Generate(ACTION_TYPE.CREATE_CONDITIONAL_STATEMENTS_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 10000, Counter);
 
-              bool Correctness =  Generate(ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
+                bool Correctness = Generate(ACTION_TYPE.CREATE_WHILE_LOOP_COMBINED_WITH_OTHER_STATEMENT, TestCaseWithErrorFile, TestCaseWithoutErrorFile, 1500, Counter);
 
                 if (Correctness)
                 {
