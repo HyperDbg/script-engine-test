@@ -17,7 +17,7 @@
   //
   // Test case configuration
   //
-  current_test_case = 19;
+  current_test_case = 0n19;
 
   //
   // Make the environment ready 
