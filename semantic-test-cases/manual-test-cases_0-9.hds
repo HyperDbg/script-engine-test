@@ -3,6 +3,7 @@
   //
   // Test case activation
   //
+  test_case0 = 1;
   test_case1 = 1;
   test_case2 = 1;
   test_case3 = 0;
@@ -22,6 +23,36 @@
   // Make the environment ready 
   //
   .variable_equal_to_55 = 0x55;
+
+  /* ======================================================================= */
+
+  //
+  // Test case 0 (simple prints)
+  //
+  // current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case0 != 1) {
+      current_test_case = current_test_case + 1;
+      break;
+    }
+	
+	print(@rax+@ax+.variable_equal_to_55);
+    printf("test case %d was successful\n", current_test_case);
+
+
+
+  }
+  while (0);
+
+  //
+  // Restore the .variable_equal_to_55 to 0x55;
+  //
+  .variable_equal_to_55 = 0x55;
+
+  /* ======================================================================= */
+
 
   /* ======================================================================= */
 
