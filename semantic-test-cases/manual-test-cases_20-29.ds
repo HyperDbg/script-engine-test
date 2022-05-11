@@ -117,15 +117,11 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
-
-    /*
-        if (physical_to_virtual(nt!ExAllocatePoolWithTag) != 0) {
-          printf("test case %d was successful\n", current_test_case);
-        } else {
-          printf("test case %d was failed\n", current_test_case);
-        }
-    */
+    if (physical_to_virtual(nt!ExAllocatePoolWithTag) != 0) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
 
   }
   while (0);
@@ -201,20 +197,16 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
+    ed(@rsp - 8, 0x00414141);
+    ed(@rsp - 8 - 4, 0x42424242);
+    ed(@rsp - 8 - 8, 0x43434343);
+    ed(@rsp - 8 - 8 - 4, 0x44444444);
 
-    /*
-	ed(@rsp-8, 0x00414141);
-	ed(@rsp-8-4, 0x42424242);
-	ed(@rsp-8-8, 0x43434343);
-	ed(@rsp-8-8-4, 0x44444444);
-		
-	if (strlen(@rsp-8-8-4) == f) {
+    if (strlen(@rsp - 8 - 8 - 4) == f) {
       printf("test case %d was successful\n", current_test_case);
     } else {
       printf("test case %d was failed\n", current_test_case);
     }
-	*/
   }
   while (0);
 

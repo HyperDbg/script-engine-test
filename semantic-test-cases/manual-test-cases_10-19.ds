@@ -67,21 +67,16 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
+    test_variable = .variable_equal_to_55 + 10;
 
-    /*
-        test_variable = .variable_equal_to_55 + 10;
+    interlocked_decrement( & test_variable);
+    interlocked_decrement( & test_variable);
 
-        interlocked_decrement( & test_variable);
-        interlocked_decrement( & test_variable);
-
-        if (interlocked_decrement( & test_variable) == 62) {
-          printf("test case %d was successful\n", current_test_case);
-        } else {
-          printf("test case %d was failed\n", current_test_case);
-        }
-    	
-    */
+    if (interlocked_decrement( & test_variable) == 62) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
 
   }
   while (0);
@@ -130,21 +125,16 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
+    test_variable = .variable_equal_to_55 + 10;
 
-    /*
-        test_variable = .variable_equal_to_55 + 10;
+    interlocked_increment( & test_variable);
+    interlocked_increment( & test_variable);
 
-        interlocked_increment( & test_variable);
-        interlocked_increment( & test_variable);
-
-        if (interlocked_increment( & test_variable) == 68) {
-          printf("test case %d was successful\n", current_test_case);
-        } else {
-          printf("test case %d was failed\n", current_test_case);
-        }
-    	
-    */
+    if (interlocked_increment( & test_variable) == 68) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
 
   }
   while (0);
@@ -162,9 +152,6 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
-
-    /*
     .my_interlocked_var = 0x85;
     interlocked_exchange( & .my_interlocked_var, .variable_equal_to_55);
 
@@ -173,7 +160,6 @@
     } else {
       printf("test case %d was failed\n", current_test_case);
     }
-    */
 
   }
   while (0);
@@ -219,19 +205,14 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
-
-    /*
     my_interlocked_var = 0x85;
-    interlocked_exchange_add( &my_interlocked_var, .variable_equal_to_55);
-	
+    interlocked_exchange_add( & my_interlocked_var, .variable_equal_to_55);
 
     if (my_interlocked_var == da) {
       printf("test case %d was successful\n", current_test_case);
     } else {
       printf("test case %d was failed\n", current_test_case);
     }
-	*/
   }
   while (0);
 
@@ -272,22 +253,15 @@
       break;
     }
 
-    printf("test case %d is commented\n", current_test_case);
+    temp_var = dc;
+    temp_var = temp_var - 1;
 
-    /*
-		
-	temp_var = dc;
-	temp_var = temp_var - 1;
-	
-	if (temp_var == db)
-	{
+    if (temp_var == 0xdb) {
       printf("test case %d was successful\n", current_test_case);
-	}
-	else {
-	      printf("test case %d was failed\n", current_test_case);
-	}
-	
-	*/
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
   }
   while (0);
 
