@@ -153,7 +153,7 @@
     }
 
     .my_interlocked_var = 0x85;
-    interlocked_exchange( & .my_interlocked_var, .variable_equal_to_55);
+    result = interlocked_exchange( & .my_interlocked_var, .variable_equal_to_55);
 
     if (.my_interlocked_var == 0x55 && result == 0x85) {
       printf("test case %d was successful\n", current_test_case);

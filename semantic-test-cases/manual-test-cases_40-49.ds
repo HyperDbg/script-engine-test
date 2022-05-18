@@ -48,7 +48,7 @@
       break;
     }
 
-    result = ref(.variable_equal_to_55);
+    result = &(.variable_equal_to_55);
 
     // printf("result : %llx\n", *result);
 
