@@ -1,9 +1,8 @@
-//
-// test case 22 is okay to be failed in the user-mode, it should work on kernel-mode
-//
+? {
 
-?
-{
+  //
+  // test case 22 is okay to be failed in the user-mode, it should work on kernel-mode
+  //
 
   //
   // Test case activation
@@ -22,7 +21,7 @@
   //
   // Test case configuration
   //
-  current_test_case = 0n 19;
+  current_test_case = 0n19;
 
   //
   // Make the environment ready 
