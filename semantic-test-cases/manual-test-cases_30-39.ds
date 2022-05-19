@@ -276,11 +276,20 @@
     }
 
     // printf("%d is total\n", sum)
+	
+	//
+	// test ++ and -- operators
+	//
+	sum ++;
+	sum ++;
+	sum --;
+	sum ++;
+	sum ++;
 
     if (sum == 5a - 1 + 1 + 1) {
       printf("test case %d was failed\n", current_test_case);
     }
-    elsif(sum == 5a - 1 + 1) {
+    elsif(sum == 5a - 1 + 4) {
       printf("test case %d was successful\n", current_test_case);
     }
     else {
