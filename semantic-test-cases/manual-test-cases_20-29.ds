@@ -2,7 +2,8 @@
 // test case 22 is okay to be failed in the user-mode, it should work on kernel-mode
 //
 
-? {
+?
+{
 
   //
   // Test case activation
@@ -21,7 +22,7 @@
   //
   // Test case configuration
   //
-  current_test_case = 0n19;
+  current_test_case = 0n 19;
 
   //
   // Make the environment ready 
@@ -205,7 +206,7 @@
     ed(@rsp - 8 - 4, 0x42424242);
     ed(@rsp - 8 - 8, 0x43434343);
     ed(@rsp - 8 - 8 - 4, 0x44444444);
-	
+
     if (strlen(@rsp - 8 - 8 - 4) == f) {
       printf("test case %d was successful\n", current_test_case);
     } else {
@@ -231,7 +232,7 @@
     ed(@rsp - 8 - 4, 0x00420042);
     ed(@rsp - 8 - 8, 0x00430043);
     ed(@rsp - 8 - 8 - 4, 0x00440044);
-	
+
     if (7 + 10 == wcslen(@rsp - 8 - 8 - 4) + 10) {
       printf("test case %d was successful\n", current_test_case);
     } else {
