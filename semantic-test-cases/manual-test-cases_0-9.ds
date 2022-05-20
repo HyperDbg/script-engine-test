@@ -38,7 +38,6 @@
       break;
     }
 
-    print(@rax + @ax + .variable_equal_to_55);
     printf("test case %d was successful\n", current_test_case);
 
   }

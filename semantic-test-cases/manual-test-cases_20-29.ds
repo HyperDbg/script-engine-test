@@ -111,7 +111,7 @@
   /* ======================================================================= */
 
   //
-  // Test case 22 (physical_to_virtual)
+  // Test case 22 (virtual_to_physical)
   //
   current_test_case = current_test_case + 1;
 
@@ -121,7 +121,7 @@
       break;
     }
 
-    if (physical_to_virtual(nt!ExAllocatePoolWithTag) != 0) {
+    if (virtual_to_physical(nt!ExAllocatePoolWithTag) != 0) {
       printf("test case %d was successful\n", current_test_case);
     } else {
       printf("test case %d was failed\n", current_test_case);
