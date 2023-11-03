@@ -243,7 +243,7 @@
   /* ======================================================================= */
 
   //
-  // Test case 27 (disable_event)
+  // Test case 27 (event_disable)
   //
   current_test_case = current_test_case + 1;
 
@@ -253,7 +253,7 @@
       break;
     }
 
-    disable_event(@rsp + 220);
+    event_disable(@rsp + 220);
 
     printf("test case %d was successful\n", current_test_case);
 
@@ -263,7 +263,7 @@
   /* ======================================================================= */
 
   //
-  // Test case 28 (enable_event)
+  // Test case 28 (event_enable)
   //
   current_test_case = current_test_case + 1;
 
@@ -273,7 +273,7 @@
       break;
     }
 
-    enable_event(@rsp + 220);
+    event_enable(@rsp + 220);
 
     printf("test case %d was successful\n", current_test_case);
 

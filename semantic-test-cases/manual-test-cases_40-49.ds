@@ -106,7 +106,7 @@
     temp_holder = 0xffffffffffffffff;
     temp_holder2 = & temp_holder;
 
-    if (dd(temp_holder2) != ffff) {
+    if (dd(temp_holder2) != ffffffff) {
       printf("test case %d was failed\n", current_test_case);
       break;
     }
@@ -192,7 +192,7 @@
 
     // printf("result : %llx\n", dw(temp_holder2));
 
-    if (dw(temp_holder2) != 0xffffffff) {
+    if (dw(temp_holder2) != 0xffff) {
       printf("test case %d was failed\n", current_test_case);
       break;
     }
@@ -305,7 +305,7 @@
     was_successful = 0;
 
     for (i = 10; i <= 12; i++) {
-      if (low(.temp_holder2) + 5 * 2 + i == dd(.temp_holder2) + 5 * 2 + i && db(.temp_holder2) == ef) {
+      if (low(.temp_holder2) + 5 * 2 + i == dw(.temp_holder2) + 5 * 2 + i && db(.temp_holder2) == ef) {
         was_successful = 1;
         break;
       }
