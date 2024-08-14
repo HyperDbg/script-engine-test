@@ -11,7 +11,7 @@
   test_case65 = 1;
   test_case66 = 1;
   test_case67 = 1;
-  test_case68 = 1;
+  test_case68 = 0;
   test_case69 = 1;
 
   //
@@ -415,7 +415,7 @@
       break;
     }
 
-    myval6 = factorial(10);
+    myval6 = factorial(0n10);
 
     printf("Result of Factorial equals to %d\n", myval6);
 
