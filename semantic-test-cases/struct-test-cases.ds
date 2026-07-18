@@ -1,0 +1,260 @@
+? {
+
+  //
+  // Test case activation
+  //
+  test_case70 = 1;
+  test_case71 = 1;
+  test_case72 = 1;
+  test_case73 = 1;
+  test_case74 = 1;
+  test_case75 = 1;
+  test_case76 = 1;
+
+  //
+  // Test case configuration
+  //
+  current_test_case = 0n69;
+
+  /* ======================================================================= */
+
+  //
+  // Test case 70 (struct member as a printf argument)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case70 != 1) {
+      break;
+    }
+
+    struct PointPrintf {
+      int x;
+      int y;
+    };
+
+    struct PointPrintf printf_point = {1, 0n70};
+    printf_point.x = 20;
+
+    if (printf_point.x == 20 && printf_point.y == current_test_case) {
+      printf("test case %d was successful\n", printf_point.y);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 71 (struct member state)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case71 != 1) {
+      break;
+    }
+
+    struct PointState {
+      int x;
+      int y;
+    };
+
+    struct PointState state_point = {1, 2};
+    state_point.x = 20;
+
+    if (state_point.x == 20 && state_point.y == 2) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 72 (struct initializer and member arithmetic)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case72 != 1) {
+      break;
+    }
+
+    struct PointArithmetic {
+      int x;
+      int y;
+    };
+
+    struct PointArithmetic arithmetic_point = {10, 20};
+    arithmetic_point.x = arithmetic_point.x + 5;
+    arithmetic_point.y = arithmetic_point.y * 2;
+
+    if (arithmetic_point.x == 15 && arithmetic_point.y == 40) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 73 (whole-struct copy)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case73 != 1) {
+      break;
+    }
+
+    struct PairCopy {
+      int first;
+      int second;
+    };
+
+    struct PairCopy copy_source = {11, 22};
+    struct PairCopy copy_destination;
+
+    copy_destination = copy_source;
+    copy_source.first = 99;
+
+    if (copy_destination.first == 11 &&
+        copy_destination.second == 22 &&
+        copy_source.first == 99) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 74 (nested struct members)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case74 != 1) {
+      break;
+    }
+
+    struct NestedCoordinates {
+      int x;
+      int y;
+    };
+
+    struct NestedRectangle {
+      struct NestedCoordinates top_left;
+      struct NestedCoordinates bottom_right;
+    };
+
+    struct NestedRectangle rectangle;
+    rectangle.top_left.x = 5;
+    rectangle.top_left.y = 2;
+    rectangle.bottom_right.x = 30;
+    rectangle.bottom_right.y = 50;
+
+    if (rectangle.top_left.x == 5 &&
+        rectangle.top_left.y == 2 &&
+        rectangle.bottom_right.x == 30 &&
+        rectangle.bottom_right.y == 50) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 75 (partial initializer zero-fill)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case75 != 1) {
+      break;
+    }
+
+    struct PartialValues {
+      int first;
+      int second;
+      int third;
+    };
+
+    struct PartialValues partial_values = {7};
+
+    if (partial_values.first == 7 &&
+        partial_values.second == 0 &&
+        partial_values.third == 0) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 76 (1/2/4/8-byte scalar members)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case76 != 1) {
+      break;
+    }
+
+    struct ScalarWidths {
+      char byte_value;
+      short word_value;
+      int dword_value;
+      long qword_value;
+    };
+
+    struct ScalarWidths scalar_values = {
+      0x12,
+      0x3456,
+      0x789abcde,
+      0x1122334455667788
+    };
+
+    scalar_values.byte_value = 0x21;
+    scalar_values.word_value = 0x6543;
+
+    if (scalar_values.byte_value == 0x21 &&
+        scalar_values.word_value == 0x6543 &&
+        scalar_values.dword_value == 0x789abcde &&
+        scalar_values.qword_value == 0x1122334455667788) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+}
