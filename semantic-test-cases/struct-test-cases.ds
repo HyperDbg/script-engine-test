@@ -15,6 +15,7 @@
   test_case79 = 1;
   test_case80 = 1;
   test_case81 = 1;
+  test_case82 = 1;
 
   //
   // Test case configuration
@@ -431,6 +432,38 @@
 
     if (recursive_node_pointer->value == current_test_case &&
         (*recursive_node_pointer).value == current_test_case) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 82 (compound assignment to a struct member)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case82 != 1) {
+      break;
+    }
+
+    struct CompoundMemberPoint {
+      int x;
+      int y;
+    };
+
+    struct CompoundMemberPoint compound_member_point = {0n31, 0n32};
+    compound_member_point.x += 5;
+    compound_member_point.y = 1 + compound_member_point.y;
+
+    if (compound_member_point.x == 0n36 &&
+        compound_member_point.y == 0n33) {
       printf("test case %d was successful\n", current_test_case);
     } else {
       printf("test case %d was failed\n", current_test_case);
