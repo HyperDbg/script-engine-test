@@ -10,6 +10,11 @@
   test_case74 = 1;
   test_case75 = 1;
   test_case76 = 1;
+  test_case77 = 1;
+  test_case78 = 1;
+  test_case79 = 1;
+  test_case80 = 1;
+  test_case81 = 1;
 
   //
   // Test case configuration
@@ -249,6 +254,183 @@
         scalar_values.word_value == 0x6543 &&
         scalar_values.dword_value == 0x789abcde &&
         scalar_values.qword_value == 0x1122334455667788) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 77 (local struct pointer member read)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case77 != 1) {
+      break;
+    }
+
+    struct ArrowRead {
+      int value;
+    };
+
+    struct ArrowRead arrow_read = {0n77};
+    struct ArrowRead *arrow_read_pointer;
+    arrow_read_pointer = &arrow_read;
+
+    if (arrow_read_pointer->value == current_test_case) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 78 (local struct pointer member write)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case78 != 1) {
+      break;
+    }
+
+    struct ArrowWrite {
+      int value;
+    };
+
+    struct ArrowWrite arrow_write = {0};
+    struct ArrowWrite *arrow_write_pointer;
+    arrow_write_pointer = &arrow_write;
+    arrow_write_pointer->value = current_test_case;
+
+    if (arrow_write.value == current_test_case &&
+        arrow_write_pointer->value == current_test_case) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 79 (1/2/4/8-byte members through a struct pointer)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case79 != 1) {
+      break;
+    }
+
+    struct ArrowWidths {
+      char byte_value;
+      short word_value;
+      int dword_value;
+      long qword_value;
+    };
+
+    struct ArrowWidths arrow_widths = {0, 0, 0, 0};
+    struct ArrowWidths *arrow_widths_pointer;
+    arrow_widths_pointer = &arrow_widths;
+    arrow_widths_pointer->byte_value = 0x12;
+    arrow_widths_pointer->word_value = 0x3456;
+    arrow_widths_pointer->dword_value = 0x789abcde;
+    arrow_widths_pointer->qword_value = 0x1122334455667788;
+
+    if (arrow_widths.byte_value == 0x12 &&
+        arrow_widths.word_value == 0x3456 &&
+        arrow_widths.dword_value == 0x789abcde &&
+        arrow_widths.qword_value == 0x1122334455667788 &&
+        arrow_widths_pointer->byte_value == 0x12 &&
+        arrow_widths_pointer->word_value == 0x3456 &&
+        arrow_widths_pointer->dword_value == 0x789abcde &&
+        arrow_widths_pointer->qword_value == 0x1122334455667788) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 80 (nested member access through a struct pointer)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case80 != 1) {
+      break;
+    }
+
+    struct ArrowNestedValue {
+      int value;
+    };
+
+    struct ArrowNestedContainer {
+      struct ArrowNestedValue nested;
+    };
+
+    struct ArrowNestedContainer arrow_nested;
+    struct ArrowNestedContainer *arrow_nested_pointer;
+    arrow_nested_pointer = &arrow_nested;
+    arrow_nested_pointer->nested.value = current_test_case;
+
+    if (arrow_nested.nested.value == current_test_case &&
+        arrow_nested_pointer->nested.value == current_test_case) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+
+  }
+  while (0);
+
+  /* ======================================================================= */
+
+  //
+  // Test case 81 (recursive struct pointer and dereference equivalence)
+  //
+  current_test_case = current_test_case + 1;
+
+  do {
+
+    if (test_case81 != 1) {
+      break;
+    }
+
+    struct RecursiveNode;
+
+    struct RecursiveNode {
+      int value;
+      struct RecursiveNode *next;
+    };
+
+    struct RecursiveNode recursive_node;
+    struct RecursiveNode *recursive_node_pointer;
+    recursive_node.value = current_test_case;
+    recursive_node_pointer = &recursive_node;
+
+    if (recursive_node_pointer->value == current_test_case &&
+        (*recursive_node_pointer).value == current_test_case) {
       printf("test case %d was successful\n", current_test_case);
     } else {
       printf("test case %d was failed\n", current_test_case);
