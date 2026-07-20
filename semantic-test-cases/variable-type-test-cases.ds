@@ -1,0 +1,174 @@
+? {
+
+  //
+  // Test case activation
+  //
+  test_case83 = 1;
+  test_case84 = 1;
+  test_case85 = 1;
+  test_case86 = 1;
+  test_case87 = 1;
+  test_case88 = 1;
+  test_case89 = 1;
+  test_case90 = 1;
+  test_case91 = 1;
+  test_case92 = 1;
+
+  current_test_case = 0n82;
+
+  .sizeof_probe_executed = 0;
+  int sizeof_probe() {
+    .sizeof_probe_executed = 1;
+    return 1;
+  }
+
+  /* ======================================================================= */
+
+  // Test case 83 (integer type sizes)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case83 != 1) { break; }
+    if (sizeof(char) == 1 && sizeof(short) == 2 && sizeof(int) == 4 &&
+        sizeof(long) == 8 && sizeof(long long) == 8) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 84 (struct and logical-result sizes)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case84 != 1) { break; }
+    struct VariableTypePair { int left; unsigned short right; };
+    if (sizeof(struct VariableTypePair) == 8 &&
+        sizeof(!(char)0) == 4 && sizeof(!(long)0) == 4) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 85 (narrow signed and unsigned normalization)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case85 != 1) { break; }
+    char signed_byte = 0xff;
+    unsigned char unsigned_byte = 0x12345;
+    if (signed_byte == -1 && unsigned_byte == 0x45) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 86 (typed modulo and compound assignment)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case86 != 1) { break; }
+    int int_value = 0n10;
+    long long_value = 0n10;
+    int_value %= 4;
+    long_value %= 4;
+    if (int_value == 2 && long_value == 2) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 87 (integer and floating-point casts)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case87 != 1) { break; }
+    int integer_value = (int)(unsigned char)0x12345;
+    double double_value = (double)integer_value;
+    long restored_value = (long)double_value;
+    if (integer_value == 0x45 && double_value == 69.0 && restored_value == 0n69) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 88 (implicit variables default to unsigned long long)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case88 != 1) { break; }
+    implicit_variable = 0xffffffffffffffff;
+    if (sizeof(implicit_variable) == 8 && implicit_variable > 0) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 89 (pointer casts, subtraction, and comparison)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case89 != 1) { break; }
+    char *left_pointer = (char *)0xffffffffffffffff;
+    char *right_pointer = (char *)0xfffffffffffffff0;
+    if (left_pointer - right_pointer == 0n15 &&
+        right_pointer - left_pointer == -0n15 &&
+        (void *)0xffffffffffffffff > (void *)0) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 90 (sizeof expression does not execute its operand)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case90 != 1) { break; }
+    if (sizeof(sizeof_probe()) == 4 && .sizeof_probe_executed == 0) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 91 (logical short-circuit)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case91 != 1) { break; }
+    if ((1 || 1 / 0) && !(0 && 1 / 0)) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+  /* ======================================================================= */
+
+  // Test case 92 (typedef-name declaration and sizeof)
+  current_test_case = current_test_case + 1;
+  do {
+    if (test_case92 != 1) { break; }
+    typedef unsigned short variable_word;
+    variable_word typedef_value = 0x12345;
+    if (typedef_value == 0x2345 && sizeof(variable_word) == 2) {
+      printf("test case %d was successful\n", current_test_case);
+    } else {
+      printf("test case %d was failed\n", current_test_case);
+    }
+  } while (0);
+
+}
