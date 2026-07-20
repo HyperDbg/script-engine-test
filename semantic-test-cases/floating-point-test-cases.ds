@@ -1,0 +1,62 @@
+? {
+    float var1 = 11.5;
+    float var2 = 0.5;
+    float var3 = .5;
+    float var4 = 11.;
+    double var5 = 0.789;
+    float negative1 = -11.5;
+    float negative2 = -.5;
+    double negative3 = -0.789;
+    double negativeZero = -0.0;
+    double positive = +.5;
+
+    printf("floating point: %f %f %f %f %f\n", var1, var2, var3, var4, var5);
+    printf("negative floating point: %f %f %f %f\n", negative1, negative2, negative3, negativeZero);
+    printf("runtime negative floating point: %f\n", -var5);
+    printf("runtime positive floating point: %f\n", positive);
+
+    float floatAdd = 11.5 + 0.5;
+    float floatSub = 11.5 - 0.5;
+    float floatMul = 1.5 * 2.0;
+    float floatDiv = 7.5 / 2.5;
+    double doubleAdd = 0.75 + 0.25;
+    double doubleSub = 5.5 - 2.0;
+    double doubleMul = 1.25 * 4.0;
+    double doubleDiv = 9.0 / 4.0;
+    float mixedSingle = 1.5;
+    double mixedResult = mixedSingle + 0.25;
+    double precedenceResult = 1.0 + 2.0 * 3.0;
+    double negativeResult = -2.0 * 3.0;
+
+    printf("floating arithmetic: %f %f %f %f\n", floatAdd, floatSub, floatMul, floatDiv);
+    printf("double arithmetic: %f %f %f %f\n", doubleAdd, doubleSub, doubleMul, doubleDiv);
+    printf("mixed and precedence: %f %f %f\n", mixedResult, precedenceResult, negativeResult);
+	
+	// Expected output:
+	// floating point: 11.500000 0.500000 0.500000 11.000000 0.789000
+	// negative floating point: -11.500000 -0.500000 -0.789000 -0.000000
+	// runtime negative floating point: -0.789000
+	// runtime positive floating point: 0.500000
+	// floating arithmetic was successful
+	// floating arithmetic: 12.000000 11.000000 3.000000 3.000000
+	// double arithmetic: 1.000000 3.500000 5.000000 2.250000
+	// mixed and precedence: 1.750000 7.000000 -6.000000
+
+    if (floatAdd == 12.0 && floatSub == 11.0 &&
+        floatMul == 3.0 && floatDiv == 3.0 &&
+        doubleAdd == 1.0 && doubleSub == 3.5 &&
+        doubleMul == 5.0 && doubleDiv == 2.25 &&
+        mixedResult == 1.75 && precedenceResult == 7.0 &&
+        negativeResult == -6.0 &&
+        floatAdd > floatSub && floatSub >= 11.0 &&
+        floatSub < floatAdd && floatSub <= 11.0 &&
+        floatAdd != floatSub && negativeZero == 0.0)
+    {
+        printf("floating arithmetic was successful\n");
+    }
+    else
+    {
+        printf("floating arithmetic was failed\n");
+    }
+}
+
