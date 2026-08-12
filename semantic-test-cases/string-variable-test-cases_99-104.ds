@@ -1,0 +1,83 @@
+// semantic-test-marker: test case 99 was successful
+// semantic-test-marker: test case 100 was successful
+// semantic-test-marker: test case 101 was successful
+// semantic-test-marker: test case 102 was successful
+// semantic-test-marker: test case 103 was successful
+// semantic-test-marker: test case 104 was successful
+? {
+  // Test case 99: narrow stores and typed loads.
+  char narrow_text[] = {0x1ff, 0};
+  wchar_t narrow_wide_text[] = {0x12345, 0};
+  if (narrow_text[0] == -1 && narrow_wide_text[0] == 0x2345) {
+    printf("test case 99 was successful\n");
+  } else {
+    printf("test case 99 was failed\n");
+  }
+
+  // Test case 100: array index writes mutate string storage.
+  char mutable_text[] = "abc";
+  wchar_t mutable_wide_text[] = L"abc";
+  mutable_text[0] = 'X';
+  mutable_text[1] = 0x159;
+  mutable_wide_text[0] = L'X';
+  mutable_wide_text[1] = 0x10059;
+  if (mutable_text[0] == 'X' && mutable_text[1] == 'Y' &&
+      mutable_wide_text[0] == L'X' && mutable_wide_text[1] == L'Y') {
+    printf("test case 100 was successful\n");
+  } else {
+    printf("test case 100 was failed\n");
+  }
+
+  // Test case 101: array-to-pointer decay works with existing builtins.
+  char decay_text[] = "123456";
+  wchar_t decay_wide_text[] = L"123456";
+  char *text_pointer = decay_text;
+  wchar_t *wide_text_pointer = decay_wide_text;
+  if (strlen(text_pointer) == 6 && strlen(decay_text + 2) == 4 &&
+      wcslen(wide_text_pointer) == 6 && wcslen(decay_wide_text + 2) == 4) {
+    printf("test case 101 was successful\n");
+  } else {
+    printf("test case 101 was failed\n");
+  }
+
+  // Test case 102: char pointer indexing and dereference writes.
+  char pointer_text[] = "abcd";
+  char *char_pointer = pointer_text;
+  char_pointer[0] = 'W';
+  *(char_pointer + 1) = 'X';
+  *(char_pointer + 2) = 'Y';
+  if (pointer_text[0] == 'W' && pointer_text[1] == 'X' &&
+      pointer_text[2] == 'Y' && char_pointer + 3 - char_pointer == 3) {
+    printf("test case 102 was successful\n");
+  } else {
+    printf("test case 102 was failed\n");
+  }
+
+  // Test case 103: wchar_t pointer arithmetic scales by two bytes.
+  wchar_t wide_pointer_text[] = L"abcd";
+  wchar_t *wide_pointer = wide_pointer_text;
+  wide_pointer[0] = L'W';
+  *(wide_pointer + 1) = L'X';
+  *(wide_pointer + 2) = L'Y';
+  if (wide_pointer_text[0] == L'W' && wide_pointer_text[1] == L'X' &&
+      wide_pointer_text[2] == L'Y' &&
+      wide_pointer + 3 - wide_pointer == 3) {
+    printf("test case 103 was successful\n");
+  } else {
+    printf("test case 103 was failed\n");
+  }
+
+  // Test case 104: separate arrays own independent mutable storage.
+  char first_text[] = "same";
+  char second_text[] = "same";
+  wchar_t first_wide_text[] = L"same";
+  wchar_t second_wide_text[] = L"same";
+  first_text[0] = 'S';
+  first_wide_text[0] = L'S';
+  if (first_text[0] == 'S' && second_text[0] == 's' &&
+      first_wide_text[0] == L'S' && second_wide_text[0] == L's') {
+    printf("test case 104 was successful\n");
+  } else {
+    printf("test case 104 was failed\n");
+  }
+}

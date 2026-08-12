@@ -8,9 +8,10 @@
   test_case2 = 1;
   test_case3 = 1;
   test_case4 = 1;
-  test_case5 = 1;
-  test_case6 = 1;
-  test_case7 = 1;
+  // $arg1 is 1 only when the semantic runner has a kernel debuggee.
+  test_case5 = $arg1;
+  test_case6 = $arg1;
+  test_case7 = $arg1;
   test_case8 = 1;
   test_case9 = 1;
 

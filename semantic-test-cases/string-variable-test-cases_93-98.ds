@@ -1,0 +1,78 @@
+// semantic-test-marker: test case 93 was successful
+// semantic-test-marker: test case 94 was successful
+// semantic-test-marker: test case 95 was successful
+// semantic-test-marker: test case 96 was successful
+// semantic-test-marker: test case 97 was successful
+// semantic-test-marker: test case 98 was successful
+? {
+  // Test case 93: inferred char array from a string literal.
+  char text[] = "123456";
+  if (strlen(text) == 6 && sizeof(text) == 7 &&
+      text[0] == '1' && text[5] == '6' && text[6] == 0) {
+    printf("test case 93 was successful\n");
+  } else {
+    printf("test case 93 was failed\n");
+  }
+
+  // Test case 94: inferred wchar_t array uses the fixed UTF-16 ABI.
+  wchar_t wide_text[] = L"ABCD";
+  if (wcslen(wide_text) == 4 && sizeof(wide_text) == 0n10 &&
+      sizeof(wide_text[0]) == 2 && wide_text[0] == L'A' &&
+      wide_text[3] == L'D' && wide_text[4] == 0) {
+    printf("test case 94 was successful\n");
+  } else {
+    printf("test case 94 was failed\n");
+  }
+
+  // Test case 95: uninitialized fixed arrays are zero-filled.
+  char empty_text[32];
+  wchar_t empty_wide_text[32];
+  if (strlen(empty_text) == 0 && wcslen(empty_wide_text) == 0 &&
+      empty_text[0] == 0 && empty_text[31] == 0 &&
+      empty_wide_text[0] == 0 && empty_wide_text[31] == 0) {
+    printf("test case 95 was successful\n");
+  } else {
+    printf("test case 95 was failed\n");
+  }
+
+  // Test case 96: fixed string arrays zero-fill their tails.
+  char fixed_text[8] = "abc";
+  char exact_text[4] = "abc";
+  wchar_t fixed_wide_text[8] = L"abc";
+  wchar_t exact_wide_text[4] = L"abc";
+  if (strlen(fixed_text) == 3 && wcslen(fixed_wide_text) == 3 &&
+      strlen(exact_text) == 3 && wcslen(exact_wide_text) == 3 &&
+      fixed_text[3] == 0 && fixed_text[7] == 0 &&
+      fixed_wide_text[3] == 0 && fixed_wide_text[7] == 0) {
+    printf("test case 96 was successful\n");
+  } else {
+    printf("test case 96 was failed\n");
+  }
+
+  // Test case 97: inferred initializer lists do not add a terminator.
+  char listed_text[] = {'a', 'b', 0};
+  char unterminated_text[] = {'x', 'y'};
+  wchar_t listed_wide_text[] = {L'a', L'b', 0};
+  if (sizeof(listed_text) == 3 && sizeof(unterminated_text) == 2 &&
+      sizeof(listed_wide_text) == 6 && listed_text[1] == 'b' &&
+      unterminated_text[1] == 'y' && listed_wide_text[1] == L'b') {
+    printf("test case 97 was successful\n");
+  } else {
+    printf("test case 97 was failed\n");
+  }
+
+  // Test case 98: runtime initializer expressions and fixed-tail zeroing.
+  char first = 'A';
+  wchar_t wide_first = L'A';
+  char runtime_text[5] = {first, first + 1, 0};
+  wchar_t runtime_wide_text[5] = {wide_first, wide_first + 1, 0};
+  if (runtime_text[0] == 'A' && runtime_text[1] == 'B' &&
+      runtime_text[2] == 0 && runtime_text[4] == 0 &&
+      runtime_wide_text[0] == L'A' && runtime_wide_text[1] == L'B' &&
+      runtime_wide_text[2] == 0 && runtime_wide_text[4] == 0) {
+    printf("test case 98 was successful\n");
+  } else {
+    printf("test case 98 was failed\n");
+  }
+
+}

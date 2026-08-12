@@ -9,14 +9,15 @@
   //
   test_case20 = 1;
   test_case21 = 1;
-  test_case22 = 1;
+  // $arg1 is 1 only when the semantic runner has a kernel debuggee.
+  test_case22 = $arg1;
   test_case23 = 1;
   test_case24 = 1;
   test_case25 = 1;
   test_case26 = 1;
-  test_case27 = 1;
-  test_case28 = 1;
-  test_case29 = 1;
+  test_case27 = $arg1;
+  test_case28 = $arg1;
+  test_case29 = $arg1;
 
   //
   // Test case configuration
@@ -121,7 +122,9 @@
       break;
     }
 
-    if (virtual_to_physical(nt!ExAllocatePoolWithTag) != 0) {
+    // $arg2 is nt!ExAllocatePoolWithTag remotely and 0 locally. The local
+    // substitution keeps symbol resolution valid even though this case skips.
+    if (virtual_to_physical($arg2) != 0) {
       printf("test case %d was successful\n", current_test_case);
     } else {
       printf("test case %d was failed\n", current_test_case);
