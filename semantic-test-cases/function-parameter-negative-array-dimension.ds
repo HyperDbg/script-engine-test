@@ -1,0 +1,6 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  int consume_matrix(int values[][3]) { return values[0][0]; }
+  int mismatched_matrix[2][4];
+  consume_matrix(mismatched_matrix);
+}

@@ -1,0 +1,124 @@
+// semantic-test-marker: test case 115 was successful
+// semantic-test-marker: test case 116 was successful
+// semantic-test-marker: test case 117 was successful
+// semantic-test-marker: test case 118 was successful
+// semantic-test-marker: test case 119 was successful
+? {
+  struct ValueParameterPoint {
+    int x;
+    int y;
+  };
+
+  // Test case 115: a structure parameter is an independent by-value copy.
+  int mutate_structure_value(struct ValueParameterPoint point) {
+    point.x += 0n10;
+    point.y += 0n20;
+    return point.x + point.y;
+  }
+
+  struct ValueParameterPoint value_point = {1, 2};
+  int value_point_result = mutate_structure_value(value_point);
+  if (value_point.x == 1 && value_point.y == 2 &&
+      value_point_result == 0n33) {
+    printf("test case 115 was successful\n");
+  } else {
+    printf("test case 115 was failed\n");
+  }
+
+  // Test case 116: writes through a structure pointer affect the caller object.
+  void mutate_structure_pointer(struct ValueParameterPoint *point) {
+    point->x = 0n116;
+    point->y = point->x + 1;
+  }
+
+  struct ValueParameterPoint pointer_point = {0, 0};
+  mutate_structure_pointer(&pointer_point);
+  if (pointer_point.x == 0n116 && pointer_point.y == 0n117) {
+    printf("test case 116 was successful\n");
+  } else {
+    printf("test case 116 was failed\n");
+  }
+
+  struct NestedParameterValue {
+    int code;
+  };
+
+  struct AggregateParameterValue {
+    int values[2];
+    struct NestedParameterValue nested;
+    int *target;
+  };
+
+  // Test case 117: aggregate fields copy by value while pointer fields retain aliases.
+  int mutate_aggregate_parameter(struct AggregateParameterValue value) {
+    int original_sum = value.values[0] + value.values[1] + value.nested.code;
+    value.values[0] = 0n117;
+    value.nested.code = 0n118;
+    *value.target = 0n119;
+    return original_sum;
+  }
+
+  int aggregate_target = 0;
+  struct AggregateParameterValue aggregate_value;
+  aggregate_value.values[0] = 3;
+  aggregate_value.values[1] = 4;
+  aggregate_value.nested.code = 5;
+  aggregate_value.target = &aggregate_target;
+  int aggregate_result = mutate_aggregate_parameter(aggregate_value);
+  if (aggregate_result == 0n12 &&
+      aggregate_value.values[0] == 3 &&
+      aggregate_value.nested.code == 5 &&
+      aggregate_target == 0n119) {
+    printf("test case 117 was successful\n");
+  } else {
+    printf("test case 117 was failed\n");
+  }
+
+  // Test case 118: mixed scalar, array, structure-value, and structure-pointer parameters.
+  int evaluate_mixed_parameters(char bias,
+                                int values[],
+                                int count,
+                                struct ValueParameterPoint input,
+                                struct ValueParameterPoint *output) {
+    int sum = bias + input.x + input.y;
+    for (int i = 0; i < count; i++) {
+      sum += values[i];
+    }
+    values[0] = 0n118;
+    input.x = 0;
+    output->x = sum;
+    return sum;
+  }
+
+  int mixed_values[2] = {3, 4};
+  struct ValueParameterPoint mixed_input = {5, 6};
+  struct ValueParameterPoint mixed_output = {0, 0};
+  int mixed_result = evaluate_mixed_parameters(2,
+                                               mixed_values,
+                                               2,
+                                               mixed_input,
+                                               &mixed_output);
+  if (mixed_result == 0n20 && mixed_output.x == 0n20 &&
+      mixed_values[0] == 0n118 && mixed_input.x == 5) {
+    printf("test case 118 was successful\n");
+  } else {
+    printf("test case 118 was failed\n");
+  }
+
+  // Test case 119: recursive calls own independent structure parameter copies.
+  int recursive_structure_parameter(struct ValueParameterPoint point, int depth) {
+    if (depth == 0) {
+      return point.x;
+    }
+    point.x += 1;
+    return point.x + recursive_structure_parameter(point, depth - 1);
+  }
+
+  struct ValueParameterPoint recursive_point = {1, 0};
+  int recursive_result = recursive_structure_parameter(recursive_point, 2);
+  if (recursive_result == 8 && recursive_point.x == 1) {
+    printf("test case 119 was successful\n");
+  } else {
+    printf("test case 119 was failed\n");
+  }
+}

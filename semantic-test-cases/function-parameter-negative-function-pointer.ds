@@ -1,0 +1,4 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  int invoke_callback(int (*callback)(int), int value) { return value; }
+}

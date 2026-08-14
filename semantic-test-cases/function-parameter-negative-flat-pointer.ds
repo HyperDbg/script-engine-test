@@ -1,0 +1,7 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  int consume_matrix_pointer(int values[][3]) { return values[0][0]; }
+  int flat_values[6];
+  int *flat_pointer = flat_values;
+  consume_matrix_pointer(flat_pointer);
+}

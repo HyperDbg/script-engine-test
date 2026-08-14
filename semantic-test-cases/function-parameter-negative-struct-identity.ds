@@ -1,0 +1,8 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  struct FirstParameterType { int value; };
+  struct SecondParameterType { int value; };
+  int consume_first(struct FirstParameterType value) { return value.value; }
+  struct SecondParameterType second = {1};
+  consume_first(second);
+}

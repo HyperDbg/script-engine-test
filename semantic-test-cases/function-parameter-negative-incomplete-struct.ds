@@ -1,0 +1,5 @@
+// semantic-test-expect-error: Incomplete struct type
+? {
+  struct IncompleteParameter;
+  int consume_incomplete(struct IncompleteParameter value) { return 0; }
+}

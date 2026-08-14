@@ -1,0 +1,4 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  int consume_reference(int &value) { return value; }
+}

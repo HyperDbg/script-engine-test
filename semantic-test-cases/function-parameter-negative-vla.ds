@@ -1,0 +1,4 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  int consume_vla(int width, int values[][width]) { return values[0][0]; }
+}

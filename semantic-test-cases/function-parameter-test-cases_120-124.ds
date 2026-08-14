@@ -1,0 +1,81 @@
+// semantic-test-marker: test case 120 was successful
+// semantic-test-marker: test case 121 was successful
+// semantic-test-marker: test case 122 was successful
+// semantic-test-marker: test case 123 was successful
+// semantic-test-marker: test case 124 was successful
+? {
+  // Test case 120: two-dimensional array parameters use row-major reads.
+  int sum_two_dimensional_array(int values[][3], int rows) {
+    int sum = 0;
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < 3; j++) {
+        sum += values[i][j];
+      }
+    }
+    return sum;
+  }
+
+  int two_dimensional_values[2][3];
+  two_dimensional_values[0][0] = 1;
+  two_dimensional_values[0][1] = 2;
+  two_dimensional_values[0][2] = 3;
+  two_dimensional_values[1][0] = 4;
+  two_dimensional_values[1][1] = 5;
+  two_dimensional_values[1][2] = 6;
+  if (sum_two_dimensional_array(two_dimensional_values, 2) == 0n21) {
+    printf("test case 120 was successful\n");
+  } else {
+    printf("test case 120 was failed\n");
+  }
+
+  // Test case 121: two-dimensional parameter writes mutate the caller matrix.
+  void write_two_dimensional_array(int values[][3], int row, int column, int value) {
+    values[row][column] = value;
+  }
+
+  write_two_dimensional_array(two_dimensional_values, 1, 1, 0n121);
+  if (two_dimensional_values[0][1] == 2 &&
+      two_dimensional_values[1][1] == 0n121 &&
+      two_dimensional_values[1][2] == 6) {
+    printf("test case 121 was successful\n");
+  } else {
+    printf("test case 121 was failed\n");
+  }
+
+  // Test case 122: three-dimensional parameters retain both trailing dimensions.
+  int inspect_three_dimensional_stride(int values[][2][3]) {
+    return values[0][1][2] + values[1][0][0] + values[1][1][1];
+  }
+
+  int three_dimensional_values[2][2][3];
+  three_dimensional_values[0][1][2] = 0n10;
+  three_dimensional_values[1][0][0] = 0n20;
+  three_dimensional_values[1][1][1] = 0n30;
+  if (inspect_three_dimensional_stride(three_dimensional_values) == 0n60) {
+    printf("test case 122 was successful\n");
+  } else {
+    printf("test case 122 was failed\n");
+  }
+
+  // Test case 123: explicit pointer-to-array spelling matches adjusted array syntax.
+  int read_pointer_to_array(int (*values)[3], int row, int column) {
+    return values[row][column];
+  }
+
+  if (read_pointer_to_array(two_dimensional_values, 1, 2) == 6) {
+    printf("test case 123 was successful\n");
+  } else {
+    printf("test case 123 was failed\n");
+  }
+
+  // Test case 124: the outer bound is ignored and the first subarray keeps its size.
+  int inspect_bounded_matrix_parameter(int values[2][3]) {
+    return sizeof(values) * 0n100 + sizeof(values[0]);
+  }
+
+  if (inspect_bounded_matrix_parameter(two_dimensional_values) == 0n812) {
+    printf("test case 124 was successful\n");
+  } else {
+    printf("test case 124 was failed\n");
+  }
+}

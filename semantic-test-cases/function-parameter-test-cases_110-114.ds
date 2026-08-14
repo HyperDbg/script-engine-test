@@ -1,0 +1,80 @@
+// semantic-test-marker: test case 110 was successful
+// semantic-test-marker: test case 111 was successful
+// semantic-test-marker: test case 112 was successful
+// semantic-test-marker: test case 113 was successful
+// semantic-test-marker: test case 114 was successful
+? {
+  // Test case 110: a one-dimensional array parameter decays to an element pointer.
+  int calculate_array_sum(int values[], int count) {
+    int sum = 0;
+    for (int i = 0; i < count; i++) {
+      sum += values[i];
+    }
+    return sum;
+  }
+
+  int sum_values[4] = {0n10, 0n20, 0n30, 0n40};
+  if (calculate_array_sum(sum_values, 4) == 0n100) {
+    printf("test case 110 was successful\n");
+  } else {
+    printf("test case 110 was failed\n");
+  }
+
+  // Test case 111: pointer spelling has the same caller-visible write behavior.
+  void write_array_through_pointer(int *values, int index, int value) {
+    values[index] = value;
+  }
+
+  int pointer_array_values[3] = {1, 2, 3};
+  write_array_through_pointer(pointer_array_values, 1, 0n111);
+  if (pointer_array_values[0] == 1 &&
+      pointer_array_values[1] == 0n111 &&
+      pointer_array_values[2] == 3) {
+    printf("test case 111 was successful\n");
+  } else {
+    printf("test case 111 was failed\n");
+  }
+
+  // Test case 112: sizeof sees an adjusted array parameter as a pointer.
+  int adjusted_array_parameter_size(int values[]) {
+    return sizeof(values);
+  }
+
+  int sized_array_values[4] = {1, 2, 3, 4};
+  if (sizeof(sized_array_values) == 0n16 &&
+      adjusted_array_parameter_size(sized_array_values) == 8) {
+    printf("test case 112 was successful\n");
+  } else {
+    printf("test case 112 was failed\n");
+  }
+
+  // Test case 113: char array parameters preserve byte stride and alias storage.
+  int mutate_char_array(char text[]) {
+    text[0] = 'X';
+    text[1] = 'Y';
+    return strlen(text);
+  }
+
+  char parameter_text[] = "abcd";
+  if (mutate_char_array(parameter_text) == 4 &&
+      parameter_text[0] == 'X' && parameter_text[1] == 'Y') {
+    printf("test case 113 was successful\n");
+  } else {
+    printf("test case 113 was failed\n");
+  }
+
+  // Test case 114: wchar_t array parameters preserve the two-byte script ABI.
+  int mutate_wide_array(wchar_t text[]) {
+    text[0] = L'X';
+    text[1] = L'Y';
+    return wcslen(text);
+  }
+
+  wchar_t wide_parameter_text[] = L"abcd";
+  if (mutate_wide_array(wide_parameter_text) == 4 &&
+      wide_parameter_text[0] == L'X' && wide_parameter_text[1] == L'Y') {
+    printf("test case 114 was successful\n");
+  } else {
+    printf("test case 114 was failed\n");
+  }
+}

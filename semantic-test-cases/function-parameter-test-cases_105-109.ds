@@ -1,0 +1,81 @@
+// semantic-test-marker: test case 105 was successful
+// semantic-test-marker: test case 106 was successful
+// semantic-test-marker: test case 107 was successful
+// semantic-test-marker: test case 108 was successful
+// semantic-test-marker: test case 109 was successful
+? {
+  // Test case 105: scalar parameters normalize to their declared widths.
+  int check_scalar_parameter_widths(char signed_value,
+                                    unsigned char unsigned_value,
+                                    short short_value) {
+    if (signed_value == -1 &&
+        unsigned_value == 0xff &&
+        short_value == 0x2345) {
+      return 1;
+    }
+    return 0;
+  }
+
+  if (check_scalar_parameter_widths(0x1ff, 0x1ff, 0x12345) == 1) {
+    printf("test case 105 was successful\n");
+  } else {
+    printf("test case 105 was failed\n");
+  }
+
+  // Test case 106: assigning to a scalar parameter does not mutate the caller.
+  int mutate_scalar_parameter(int value) {
+    value += 0n7;
+    return value;
+  }
+
+  int scalar_caller_value = 0n10;
+  int scalar_callee_value = mutate_scalar_parameter(scalar_caller_value);
+  if (scalar_caller_value == 0n10 && scalar_callee_value == 0n17) {
+    printf("test case 106 was successful\n");
+  } else {
+    printf("test case 106 was failed\n");
+  }
+
+  // Test case 107: float and double arguments use their declared parameter types.
+  double combine_floating_parameters(float left, double right) {
+    left = left + 0.25;
+    return left + right;
+  }
+
+  float floating_caller_value = 1.5;
+  double floating_result = combine_floating_parameters(floating_caller_value, 0.25);
+  if (floating_caller_value == 1.5 && floating_result == 2.0) {
+    printf("test case 107 was successful\n");
+  } else {
+    printf("test case 107 was failed\n");
+  }
+
+  // Test case 108: a pointer is passed by value while writes through it are visible.
+  void mutate_pointer_parameter(int *value_pointer) {
+    *value_pointer = 0n108;
+    value_pointer = 0;
+  }
+
+  int pointer_target = 0;
+  int *pointer_caller_value = &pointer_target;
+  mutate_pointer_parameter(pointer_caller_value);
+  if (pointer_target == 0n108 && pointer_caller_value == &pointer_target) {
+    printf("test case 108 was successful\n");
+  } else {
+    printf("test case 108 was failed\n");
+  }
+
+  // Test case 109: bool parameters normalize zero and nonzero arguments.
+  int check_bool_parameters(bool false_value, bool true_value) {
+    if (false_value == 0 && true_value == 1) {
+      return 1;
+    }
+    return 0;
+  }
+
+  if (check_bool_parameters(0, 0x100) == 1) {
+    printf("test case 109 was successful\n");
+  } else {
+    printf("test case 109 was failed\n");
+  }
+}

@@ -1,0 +1,5 @@
+// semantic-test-expect-error: Invalid Syntax
+? {
+  int parameter_count_target(int left, int right) { return left + right; }
+  parameter_count_target(1);
+}
